@@ -1,0 +1,39 @@
+{
+    "name"             : "mamuz/mamuz-blog-feed",
+    "type"             : "library",
+    "description"      : "Provides feed feature for MamuzBlog",
+    "homepage"         : "https://github.com/mamuz/MamuzBlogFeed",
+    "license"          : "MIT",
+    "keywords"         : ["mamuz", "blog", "feed"],
+    "authors"          : [
+        {
+            "name" : "Marco Muths",
+            "email": "muzzi_is@web.de"
+        }
+    ],
+    "minimum-stability": "dev",
+    "prefer-stable"    : true,
+    "require"          : {
+        "php"                              : ">=5.4",
+        "ext-intl"                         : "*",
+        "zendframework/zend-mvc"           : "~2.3",
+        "zendframework/zend-servicemanager": "~2.3",
+        "zendframework/zend-eventmanager"  : "~2.3",
+        "zendframework/zend-modulemanager" : "~2.3",
+        "zendframework/zend-loader"        : "~2.3",
+        "zendframework/zend-view"          : "~2.3",
+        "zendframework/zend-http"          : "~2.3",
+        "zendframework/zend-feed"          : "~2.3",
+        "mamuz/mamuz-blog"                 : "1.*"
+    },
+    "require-dev"      : {
+        "satooshi/php-coveralls": "0.6.*",
+        "phpunit/phpunit"       : "4.2.*",
+        "mockery/mockery"       : "0.9.*"
+    },
+    "autoload"         : {
+        "psr-0": {
+            "MamuzBlogFeed\\": "src/"
+        }
+    }
+}
