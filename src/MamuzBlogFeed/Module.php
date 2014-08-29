@@ -3,8 +3,6 @@
 namespace MamuzBlogFeed;
 
 use Zend\ModuleManager\Feature;
-use Zend\ModuleManager\Listener\ServiceListenerInterface;
-use Zend\ModuleManager\ModuleManager;
 use Zend\ModuleManager\ModuleManagerInterface;
 
 class Module implements
@@ -14,13 +12,7 @@ class Module implements
 {
     public function init(ModuleManagerInterface $modules)
     {
-        $modules->loadModule('DoctrineModule');
-        $modules->loadModule('DoctrineORMModule');
-        $modules->loadModule('TwbBundle');
-
-        if ($modules instanceof ModuleManager) {
-            $this->addDomainManager($modules);
-        }
+        $modules->loadModule('MamuzBlog');
     }
 
     public function getConfig()
@@ -39,21 +31,6 @@ class Module implements
                     __NAMESPACE__ => __DIR__,
                 ),
             ),
-        );
-    }
-
-    private function addDomainManager(ModuleManager $modules)
-    {
-        /** @var \Zend\ServiceManager\ServiceLocatorInterface $sm */
-        $sm = $modules->getEvent()->getParam('ServiceManager');
-        /** @var ServiceListenerInterface $serviceListener */
-        $serviceListener = $sm->get('ServiceListener');
-
-        $serviceListener->addServiceManager(
-            'MamuzBlogFeed\DomainManager',
-            'blog_feed_domain',
-            'MamuzBlogFeed\DomainManager\ProviderInterface',
-            'getBlogFeedDomainConfig'
         );
     }
 }

@@ -40,29 +40,7 @@ class ModuleTest extends \PHPUnit_Framework_TestCase
     public function testLoadingModules()
     {
         $moduleManager = \Mockery::mock('Zend\ModuleManager\ModuleManagerInterface');
-        $moduleManager->shouldReceive('loadModule')->with('DoctrineModule');
-        $moduleManager->shouldReceive('loadModule')->with('DoctrineORMModule');
-        $moduleManager->shouldReceive('loadModule')->with('TwbBundle');
-
-        $this->fixture->init($moduleManager);
-    }
-
-    public function testAddingServiceManager()
-    {
-        $serviceListener = \Mockery::mock('Zend\ModuleManager\Listener\ServiceListenerInterface');
-        $serviceListener->shouldReceive('addServiceManager')->with(
-            'MamuzBlog\DomainManager',
-            'blog_domain',
-            'MamuzBlog\DomainManager\ProviderInterface',
-            'getBlogDomainConfig'
-        );
-        $serviceLocator = \Mockery::mock('Zend\ServiceManager\ServiceLocatorInterface');
-        $serviceLocator->shouldReceive('get')->with('ServiceListener')->andReturn($serviceListener);
-        $event = \Mockery::mock('Zend\EventManager\EventInterface');
-        $event->shouldReceive('getParam')->with('ServiceManager')->andReturn($serviceLocator);
-        $moduleManager = \Mockery::mock('Zend\ModuleManager\ModuleManager');
-        $moduleManager->shouldReceive('loadModule');
-        $moduleManager->shouldReceive('getEvent')->andReturn($event);
+        $moduleManager->shouldReceive('loadModule')->with('MamuzBlog');
 
         $this->fixture->init($moduleManager);
     }
