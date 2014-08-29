@@ -26,6 +26,9 @@ class PostsFeedFactory implements FactoryInterface
         return new Feed($this->createFeedWriter(), $postService->findPublishedPosts());
     }
 
+    /**
+     * @return FeedWriter
+     */
     private function createFeedWriter()
     {
         $feedWriter = new FeedWriter;

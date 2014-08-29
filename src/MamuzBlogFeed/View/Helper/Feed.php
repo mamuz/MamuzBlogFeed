@@ -16,6 +16,10 @@ class Feed extends AbstractHelper
     /** @var string */
     private $type = 'rss';
 
+    /**
+     * @param FeedWriter         $feedWriter
+     * @param \IteratorAggregate $posts
+     */
     public function __construct(FeedWriter $feedWriter, \IteratorAggregate $posts)
     {
         $this->posts = $posts;
