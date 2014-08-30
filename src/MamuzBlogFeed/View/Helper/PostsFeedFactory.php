@@ -2,6 +2,7 @@
 
 namespace MamuzBlogFeed\View\Helper;
 
+use Zend\Feed\Writer\Entry;
 use Zend\Feed\Writer\Feed as FeedWriter;
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorAwareInterface;
@@ -9,6 +10,11 @@ use Zend\ServiceManager\ServiceLocatorInterface;
 
 class PostsFeedFactory implements FactoryInterface
 {
+    /** @var FeedWriter */
+    private $feedWriter;
+    /** @var Entry */
+    private $entryPrototype;
+
     /**
      * {@inheritdoc}
      * @return \Zend\View\Helper\HelperInterface
@@ -23,28 +29,45 @@ class PostsFeedFactory implements FactoryInterface
         /** @var \MamuzBlog\Feature\PostQueryInterface $postService */
         $postService = $domainManager->get('MamuzBlog\Service\PostQuery');
 
-        return new Feed($this->createFeedWriter(), $postService->findPublishedPosts());
+        $this->createFeedWriter();
+        $this->createEntryPrototype();
+
+        return new Feed(
+            $this->feedWriter,
+            $this->entryPrototype,
+            $postService->findPublishedPosts()
+        );
     }
 
     /**
-     * @return FeedWriter
+     * @return void
      */
     private function createFeedWriter()
     {
-        $feedWriter = new FeedWriter;
-        $feedWriter->setTitle('Feed Example');
-        $feedWriter->setFeedLink('http://ourdomain.com/rss', 'atom');
-        $feedWriter->addAuthor(
+        $this->feedWriter = new FeedWriter;
+        $this->feedWriter->setType('rss'); // required
+        $this->feedWriter->setTitle('Feed Example');
+        $this->feedWriter->setFeedLink('http://ourdomain.com/rss', 'atom');
+        $this->feedWriter->addAuthors(
             array(
                 'name'  => 'admin',
                 'email' => 'contact@ourdomain.com',
                 'uri'   => 'http://www.ourdomain.com',
             )
         );
-        $feedWriter->setDescription('Description of this feed');
-        $feedWriter->setLink('http://ourdomain.com');
-        $feedWriter->setDateModified(time());
+        $this->feedWriter->setDescription('Description of this feed');
+        $this->feedWriter->setLink('http://ourdomain.com');
+        $this->feedWriter->setDateModified(time());
+    }
 
-        return $feedWriter;
+    /**
+     * @return void
+     */
+    private function createEntryPrototype()
+    {
+        $this->entryPrototype = $this->feedWriter->createEntry();
+
+        $this->entryPrototype->setCopyright($this->feedWriter->getCopyright());
+        $this->entryPrototype->addAuthors($this->feedWriter->getAuthors());
     }
 }
