@@ -2,14 +2,15 @@
 
 namespace MamuzBlogFeed\View\Helper;
 
+use MamuzBlog\Feature\PostQueryInterface;
 use Zend\Feed\Writer\Entry;
 use Zend\Feed\Writer\Feed as FeedWriter;
-use Zend\ServiceManager\FactoryInterface;
-use Zend\ServiceManager\ServiceLocatorAwareInterface;
-use Zend\ServiceManager\ServiceLocatorInterface;
+use Zend\ServiceManager\ServiceLocatorAwareTrait;
 
-class PostsFeedFactory implements FactoryInterface
+class FeedFactory
 {
+    use ServiceLocatorAwareTrait;
+
     const STANDARD_FEED_TYPE = 'rss';
 
     /** @var FeedWriter */
@@ -21,53 +22,67 @@ class PostsFeedFactory implements FactoryInterface
     /** @var array */
     private $config = array();
 
-    /**
-     * {@inheritdoc}
-     * @return \Zend\View\Helper\HelperInterface
-     */
-    public function createService(ServiceLocatorInterface $serviceLocator)
-    {
-        if ($serviceLocator instanceof ServiceLocatorAwareInterface) {
-            $serviceLocator = $serviceLocator->getServiceLocator();
-        }
-        /** @var ServiceLocatorInterface $domainManager */
-        $domainManager = $serviceLocator->get('MamuzBlog\DomainManager');
-        /** @var \MamuzBlog\Feature\PostQueryInterface $postService */
-        $postService = $domainManager->get('MamuzBlog\Service\PostQuery');
+    /** @var PostQueryInterface */
+    private $postService;
 
-        $this->setConfigBy($serviceLocator);
-        $this->createFeedWriter();
+    /**
+     * @param PostQueryInterface $postService
+     * @param array              $config
+     */
+    public function __construct(PostQueryInterface $postService, array $config)
+    {
+        $this->postService = $postService;
+        $this->config = $config;
+    }
+
+    /**
+     * @param  string|null $name
+     * @return Feed
+     */
+    public function create($name = null)
+    {
+        if ($name) {
+            $posts = $this->postService->findPublishedPostsByTag($name);
+        } else {
+            $name = 'postsFeed';
+            $posts = $this->postService->findPublishedPosts();
+        }
+
+        $config = $this->getConfigBy($name);
+        $this->createFeedWriter($config);
         $this->createEntryPrototype();
 
         return new Feed(
             $this->feedWriter,
             $this->entryPrototype,
-            $postService->findPublishedPosts()
+            $posts
         );
     }
 
     /**
-     * @param ServiceLocatorInterface $serviceLocator
-     * @return void
+     * @param string $name
+     * @return array
      */
-    private function setConfigBy(ServiceLocatorInterface $serviceLocator)
+    private function getConfigBy($name)
     {
-        $config = $serviceLocator->get('Config');
-        if (isset($config['MamuzBlogFeed']['postsFeed'])) {
-            $this->config = (array) $config['MamuzBlogFeed']['postsFeed'];
+        if (isset($this->config[$name])) {
+            return (array) $this->config[$name];
         }
+
+        return array();
     }
 
     /**
+     * @param array $config
      * @return void
      */
-    private function createFeedWriter()
+    private function createFeedWriter(array $config)
     {
         $this->feedWriter = new FeedWriter;
         $this->feedWriter->setType(self::STANDARD_FEED_TYPE);
         $this->feedWriter->setDateModified(time());
 
-        foreach ($this->config as $key => $value) {
+        foreach ($config as $key => $value) {
             $setMethod = 'set' . ucfirst($key);
             $addMethod = 'add' . ucfirst($key);
             if (is_callable(array($this->feedWriter, $setMethod))) {

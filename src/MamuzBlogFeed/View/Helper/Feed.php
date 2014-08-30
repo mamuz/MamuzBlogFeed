@@ -42,14 +42,6 @@ class Feed extends AbstractHelper
     }
 
     /**
-     * {@link render()}
-     */
-    public function __invoke()
-    {
-        return $this->render();
-    }
-
-    /**
      * @return FeedWriter
      */
     public function render()

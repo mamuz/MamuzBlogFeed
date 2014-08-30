@@ -1,56 +1,70 @@
 <?php
 
 return array(
-    'router'       => array(
-        'routes' => array(),
-    ),
-    'view_manager' => array(
-        'strategies' => array('ViewFeedStrategy'),
-    ),
-    'view_helpers' => array(
-        'factories' => array(
-            'postsFeed' => 'MamuzBlogFeed\View\Helper\PostsFeedFactory',
+    'router'        => array(
+        'routes' => array(
+            'blogFeedPosts' => array(
+                'type'    => 'segment',
+                'options' => array(
+                    'route'       => '/blog[/:tag]',
+                    'constraints' => array(
+                        'tag' => '[a-zA-Z0-9_+%-]*',
+                    ),
+                    'defaults'    => array(
+                        'controller' => 'MamuzBlogFeed\Controller\Feed',
+                        'action'     => 'posts',
+                    ),
+                ),
+            ),
         ),
+    ),
+    'controllers'   => array(
+        'factories' => array(
+            'MamuzBlogFeed\Controller\Feed' => 'MamuzBlogFeed\Controller\FeedControllerFactory',
+        ),
+    ),
+    'view_manager'  => array(
+        'strategies' => array('ViewFeedStrategy'),
     ),
     'MamuzBlogFeed' => array(
         'postsFeed' => array(
-            'type' => 'rss',
-            'id' => '',
-            'copyright' => '',
-            'language' => '',
-            'dateCreated' => '',
-            'dateModified' => '',
+            'type'          => 'rss',
+            'id'            => '',
+            'copyright'     => '',
+            'language'      => '',
+            'dateCreated'   => '',
+            'dateModified'  => '',
             'lastBuildDate' => '',
-            'title' => '',
-            'encoding' => '',
-            'baseUrl' => '',
-            'description' => '',
-            'link' => '',
-            'hubs' => array(),
-            'feedLinks' => array(
-                'rss' => '',
-                'rdf' => '',
+            'title'         => '',
+            'encoding'      => '',
+            'baseUrl'       => '',
+            'description'   => '',
+            'link'          => '',
+            'hubs'          => array(),
+            'feedLinks'     => array(
+                'rss'  => '',
+                'rdf'  => '',
                 'atom' => '',
             ),
-            'image' => array(
+            'image'         => array(
                 'uri' => '',
             ),
-            'generator' => array(
-                'name' => '',
+            'generator'     => array(
+                'name'    => '',
                 'version' => '',
-                'uri' => '',
+                'uri'     => '',
             ),
-            'categories' => array(
+            'categories'    => array(
                 array(
-                    'term' => '',
+                    'term'   => '',
                     'scheme' => '',
                 ),
             ),
-            'authors' => array(
+            'authors'       => array(
                 array(
-                    'name' => '',
+                    'name'  => '',
                     'email' => '',
-                    'uri' => '',
+                    'uri'   => '',
                 ),
             ),
         ),
