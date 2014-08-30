@@ -1,7 +1,7 @@
 {
     "name"             : "mamuz/mamuz-blog-feed",
     "type"             : "library",
-    "description"      : "Provides feed feature for MamuzBlog",
+    "description"      : "MamuzBlog plugin to provide feeds",
     "homepage"         : "https://github.com/mamuz/MamuzBlogFeed",
     "license"          : "MIT",
     "keywords"         : ["mamuz", "blog", "feed"],
