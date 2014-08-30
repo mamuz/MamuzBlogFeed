@@ -10,10 +10,16 @@ use Zend\ServiceManager\ServiceLocatorInterface;
 
 class PostsFeedFactory implements FactoryInterface
 {
+    const STANDARD_FEED_TYPE = 'rss';
+
     /** @var FeedWriter */
     private $feedWriter;
+
     /** @var Entry */
     private $entryPrototype;
+
+    /** @var array */
+    private $config = array();
 
     /**
      * {@inheritdoc}
@@ -29,6 +35,7 @@ class PostsFeedFactory implements FactoryInterface
         /** @var \MamuzBlog\Feature\PostQueryInterface $postService */
         $postService = $domainManager->get('MamuzBlog\Service\PostQuery');
 
+        $this->setConfigBy($serviceLocator);
         $this->createFeedWriter();
         $this->createEntryPrototype();
 
@@ -40,24 +47,35 @@ class PostsFeedFactory implements FactoryInterface
     }
 
     /**
+     * @param ServiceLocatorInterface $serviceLocator
+     * @return void
+     */
+    private function setConfigBy(ServiceLocatorInterface $serviceLocator)
+    {
+        $config = $serviceLocator->get('Config');
+        if (isset($config['MamuzBlogFeed']['postsFeed'])) {
+            $this->config = (array) $config['MamuzBlogFeed']['postsFeed'];
+        }
+    }
+
+    /**
      * @return void
      */
     private function createFeedWriter()
     {
         $this->feedWriter = new FeedWriter;
-        $this->feedWriter->setType('rss'); // required
-        $this->feedWriter->setTitle('Feed Example');
-        $this->feedWriter->setFeedLink('http://ourdomain.com/rss', 'atom');
-        $this->feedWriter->addAuthors(
-            array(
-                'name'  => 'admin',
-                'email' => 'contact@ourdomain.com',
-                'uri'   => 'http://www.ourdomain.com',
-            )
-        );
-        $this->feedWriter->setDescription('Description of this feed');
-        $this->feedWriter->setLink('http://ourdomain.com');
+        $this->feedWriter->setType(self::STANDARD_FEED_TYPE);
         $this->feedWriter->setDateModified(time());
+
+        foreach ($this->config as $key => $value) {
+            $setMethod = 'set' . ucfirst($key);
+            $addMethod = 'add' . ucfirst($key);
+            if (is_callable(array($this->feedWriter, $setMethod))) {
+                $this->feedWriter->$setMethod($value);
+            } elseif (is_callable(array($this->feedWriter, $addMethod))) {
+                $this->feedWriter->$addMethod($value);
+            }
+        }
     }
 
     /**
@@ -66,7 +84,6 @@ class PostsFeedFactory implements FactoryInterface
     private function createEntryPrototype()
     {
         $this->entryPrototype = $this->feedWriter->createEntry();
-
         $this->entryPrototype->setCopyright($this->feedWriter->getCopyright());
         $this->entryPrototype->addAuthors($this->feedWriter->getAuthors());
     }

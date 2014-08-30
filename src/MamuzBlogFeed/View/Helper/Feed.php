@@ -18,9 +18,6 @@ class Feed extends AbstractHelper
     /** @var Entry */
     private $entryPrototype;
 
-    /** @var string */
-    private $type = 'rss';
-
     /**
      * @param FeedWriter         $feedWriter
      * @param Entry              $entryPrototype
@@ -42,16 +39,6 @@ class Feed extends AbstractHelper
     private function getEntryPrototype()
     {
         return clone $this->entryPrototype;
-    }
-
-    /**
-     * @param string $type
-     * @return Feed
-     */
-    public function setType($type)
-    {
-        $this->type = $type;
-        return $this;
     }
 
     /**
@@ -88,27 +75,20 @@ class Feed extends AbstractHelper
 
         $entry->setId($this->getRenderer()->hashId($post->getId()));
         $entry->setTitle($post->getTitle());
-        $entry->setLink($this->getRenderer()->permaLink($post));
+        $entry->setLink($this->getRenderer()->permaLinkPost($post));
         $entry->setDescription($this->getRenderer()->markdown($post->getDescription()));
         $entry->setContent($this->getRenderer()->markdown($post->getContent()));
         $entry->setDateModified($post->getModifiedAt());
         $entry->setDateCreated($post->getCreatedAt());
 
-        $tags = $post->getTags();
-        foreach ($tags as $tag) {
+        foreach ($post->getTags() as $tag) {
             $entry->addCategory(
                 array(
-                    'term' => $tag->getName(),
-                    //'scheme' => $uri,
+                    'term'   => $tag->getName(),
+                    'scheme' => $this->getRenderer()->permaLinkTag($tag->getName()),
                 )
             );
         }
-
-        /*
-        if ($post->hasEnclosure()) {
-            $this->setEnclosure($post->getEnclosure()->toArray());
-        }
-        */
 
         return $entry;
     }
