@@ -23,6 +23,11 @@ return array(
             'MamuzBlogFeed\Controller\Feed' => 'MamuzBlogFeed\Controller\FeedControllerFactory',
         ),
     ),
+    'blog_domain'   => array(
+        'factories' => array(
+            'MamuzBlogFeed\Service\PostQuery' => 'MamuzBlogFeed\Service\PostQueryFactory',
+        ),
+    ),
     'view_manager'  => array(
         'strategies' => array('ViewFeedStrategy'),
     ),
