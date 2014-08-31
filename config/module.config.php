@@ -6,7 +6,7 @@ return array(
             'blogFeedPosts' => array(
                 'type'    => 'segment',
                 'options' => array(
-                    'route'       => '/blog[/:tag]',
+                    'route'       => '/blog-feed[/:tag]',
                     'constraints' => array(
                         'tag' => '[a-zA-Z0-9_+%-]*',
                     ),
