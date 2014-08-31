@@ -6,6 +6,7 @@ use MamuzBlog\Entity\Post;
 use MamuzBlog\View\Helper\AbstractHelper;
 use Zend\Feed\Writer\Entry;
 use Zend\Feed\Writer\Feed as FeedWriter;
+use Zend\View\Renderer\RendererInterface;
 
 class Feed extends AbstractHelper
 {
@@ -22,15 +23,18 @@ class Feed extends AbstractHelper
      * @param FeedWriter         $feedWriter
      * @param Entry              $entryPrototype
      * @param \IteratorAggregate $posts
+     * @param RendererInterface  $renderer
      */
     public function __construct(
         FeedWriter $feedWriter,
         Entry $entryPrototype,
-        \IteratorAggregate $posts
+        \IteratorAggregate $posts,
+        RendererInterface $renderer
     ) {
         $this->posts = $posts;
         $this->entryPrototype = $entryPrototype;
         $this->feedWriter = $feedWriter;
+        $this->setView($renderer);
     }
 
     /**

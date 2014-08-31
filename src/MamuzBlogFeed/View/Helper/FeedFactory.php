@@ -5,13 +5,12 @@ namespace MamuzBlogFeed\View\Helper;
 use MamuzBlog\Feature\PostQueryInterface;
 use Zend\Feed\Writer\Entry;
 use Zend\Feed\Writer\Feed as FeedWriter;
-use Zend\ServiceManager\ServiceLocatorAwareTrait;
+use Zend\View\Renderer\RendererInterface;
 
 class FeedFactory
 {
-    use ServiceLocatorAwareTrait;
-
-    const STANDARD_FEED_TYPE = 'rss';
+    /** @var RendererInterface */
+    private $renderer;
 
     /** @var FeedWriter */
     private $feedWriter;
@@ -27,11 +26,13 @@ class FeedFactory
 
     /**
      * @param PostQueryInterface $postService
+     * @param RendererInterface  $renderer
      * @param array              $config
      */
-    public function __construct(PostQueryInterface $postService, array $config)
+    public function __construct(PostQueryInterface $postService, RendererInterface $renderer, array $config)
     {
         $this->postService = $postService;
+        $this->renderer = $renderer;
         $this->config = $config;
     }
 
@@ -52,11 +53,14 @@ class FeedFactory
         $this->createFeedWriter($config);
         $this->createEntryPrototype();
 
-        return new Feed(
+        $feed = new Feed(
             $this->feedWriter,
             $this->entryPrototype,
-            $posts
+            $posts,
+            $this->renderer
         );
+
+        return $feed;
     }
 
     /**
@@ -79,7 +83,7 @@ class FeedFactory
     private function createFeedWriter(array $config)
     {
         $this->feedWriter = new FeedWriter;
-        $this->feedWriter->setType(self::STANDARD_FEED_TYPE);
+        $this->feedWriter->setType('rss');
         $this->feedWriter->setDateModified(time());
 
         foreach ($config as $key => $value) {

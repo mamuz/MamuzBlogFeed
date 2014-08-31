@@ -19,14 +19,16 @@ class FeedControllerFactory implements FactoryInterface
             $serviceLocator = $serviceLocator->getServiceLocator();
         }
 
-        /** @var \Zend\ServiceManager\ServiceLocatorInterface $domainManager */
+        /** @var ServiceLocatorInterface $domainManager */
         $domainManager = $serviceLocator->get('MamuzBlog\DomainManager');
         /** @var \MamuzBlog\Feature\PostQueryInterface $postService */
         $postService = $domainManager->get('MamuzBlog\Service\PostQuery');
+        /** @var \Zend\View\HelperPluginManager $viewHelperManager */
+        $viewHelperManager = $serviceLocator->get('ViewHelperManager');
 
         $config = $serviceLocator->get('Config')['MamuzBlogFeed'];
 
-        $feedFactory = new FeedFactory($postService, $config);
+        $feedFactory = new FeedFactory($postService, $viewHelperManager->getRenderer(), $config);
 
         return new FeedController($feedFactory);
     }
