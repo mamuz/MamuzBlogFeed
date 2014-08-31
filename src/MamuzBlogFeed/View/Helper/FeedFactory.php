@@ -37,19 +37,19 @@ class FeedFactory
     }
 
     /**
-     * @param  string|null $name
+     * @param  string|null $tag
      * @return Feed
      */
-    public function create($name = null)
+    public function create($tag = null)
     {
-        if ($name) {
-            $posts = $this->postService->findPublishedPostsByTag($name);
+        if ($tag) {
+            $posts = $this->postService->findPublishedPostsByTag($tag);
         } else {
-            $name = 'postsFeed';
+            $tag = 'default';
             $posts = $this->postService->findPublishedPosts();
         }
 
-        $config = $this->getConfigBy($name);
+        $config = $this->getConfigBy($tag);
         $this->createFeedWriter($config);
         $this->createEntryPrototype();
 
@@ -64,13 +64,13 @@ class FeedFactory
     }
 
     /**
-     * @param string $name
+     * @param string $tag
      * @return array
      */
-    private function getConfigBy($name)
+    private function getConfigBy($tag)
     {
-        if (isset($this->config[$name])) {
-            return (array) $this->config[$name];
+        if (isset($this->config[$tag])) {
+            return (array) $this->config[$tag];
         }
 
         return array();

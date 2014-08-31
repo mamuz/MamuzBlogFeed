@@ -25,14 +25,15 @@ return array(
     ),
     'blog_domain'   => array(
         'factories' => array(
-            'MamuzBlogFeed\Service\PostQuery' => 'MamuzBlogFeed\Service\PostQueryFactory',
+            'MamuzBlogFeed\Listener\Aggregate' => 'MamuzBlogFeed\Listener\AggregateFactory',
         ),
     ),
     'view_manager'  => array(
         'strategies' => array('ViewFeedStrategy'),
     ),
     'MamuzBlogFeed' => array(
-        'postsFeed' => array(
+        'default' => array(
+            'maxResults'    => 100,
             'type'          => 'rss',
             'id'            => '',
             'copyright'     => '',
