@@ -7,10 +7,10 @@
 [![HHVM Status](http://hhvm.h4cc.de/badge/mamuz/mamuz-blog-feed.png)](http://hhvm.h4cc.de/package/mamuz/mamuz-blog-feed)
 [![Dependency Status](https://www.versioneye.com/user/projects/540625c8c4c187d04f000069/badge.svg)](https://www.versioneye.com/user/projects/540625c8c4c187d04f000069)
 
-[![Latest Stable Version](https://poser.pugx.org/mamuz/mamuz-blog/v/stable.svg)](https://packagist.org/packages/mamuz/mamuz-blog-feed)
-[![Latest Unstable Version](https://poser.pugx.org/mamuz/mamuz-blog/v/unstable.svg)](https://packagist.org/packages/mamuz/mamuz-blog-feed)
-[![Total Downloads](https://poser.pugx.org/mamuz/mamuz-blog/downloads.svg)](https://packagist.org/packages/mamuz/mamuz-blog-feed)
-[![License](https://poser.pugx.org/mamuz/mamuz-blog/license.svg)](https://packagist.org/packages/mamuz/mamuz-blog-feed)
+[![Latest Stable Version](https://poser.pugx.org/mamuz/mamuz-blog-feed/v/stable.svg)](https://packagist.org/packages/mamuz/mamuz-blog-feed)
+[![Latest Unstable Version](https://poser.pugx.org/mamuz/mamuz-blog-feed/v/unstable.svg)](https://packagist.org/packages/mamuz/mamuz-blog-feed)
+[![Total Downloads](https://poser.pugx.org/mamuz/mamuz-blog-feed/downloads.svg)](https://packagist.org/packages/mamuz/mamuz-blog-feed)
+[![License](https://poser.pugx.org/mamuz/mamuz-blog-feed/license.svg)](https://packagist.org/packages/mamuz/mamuz-blog-feed)
 
 
 ## Features
