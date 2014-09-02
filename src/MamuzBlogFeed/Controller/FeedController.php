@@ -2,7 +2,7 @@
 
 namespace MamuzBlogFeed\Controller;
 
-use MamuzBlogFeed\View\Helper\FeedFactory;
+use MamuzBlogFeed\View\Helper\FeedFactoryInterface;
 use Zend\EventManager\ListenerAggregateInterface as Listener;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\Mvc\MvcEvent;
@@ -10,17 +10,17 @@ use Zend\View\Model;
 
 class FeedController extends AbstractActionController
 {
-    /** @var FeedFactory */
+    /** @var FeedFactoryInterface */
     private $feedFactory;
 
     /** @var Listener */
     private $listener;
 
     /**
-     * @param FeedFactory $feedFactory
-     * @param Listener    $listener
+     * @param FeedFactoryInterface $feedFactory
+     * @param Listener             $listener
      */
-    public function __construct(FeedFactory $feedFactory, Listener $listener)
+    public function __construct(FeedFactoryInterface $feedFactory, Listener $listener)
     {
         $this->feedFactory = $feedFactory;
         $this->listener = $listener;

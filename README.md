@@ -1,5 +1,18 @@
 # MamuzBlogFeed
 
+[![Build Status](https://travis-ci.org/mamuz/MamuzBlogFeed.svg?branch=master)](https://travis-ci.org/mamuz/MamuzBlogFeed)
+[![Coverage Status](https://coveralls.io/repos/mamuz/MamuzBlogFeed/badge.png?branch=master)](https://coveralls.io/r/mamuz/MamuzBlogFeed?branch=master)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/mamuz/MamuzBlogFeed/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/mamuz/MamuzBlogFeed/?branch=master)
+[![SensioLabsInsight](https://insight.sensiolabs.com/projects/091c0080-0728-4a53-b1ca-1495c7b926b6/mini.png)](https://insight.sensiolabs.com/projects/091c0080-0728-4a53-b1ca-1495c7b926b6)
+[![HHVM Status](http://hhvm.h4cc.de/badge/mamuz/mamuz-blog-feed.png)](http://hhvm.h4cc.de/package/mamuz/mamuz-blog-feed)
+[![Dependency Status](https://www.versioneye.com/user/projects/540625c8c4c187d04f000069/badge.svg)](https://www.versioneye.com/user/projects/540625c8c4c187d04f000069)
+
+[![Latest Stable Version](https://poser.pugx.org/mamuz/mamuz-blog/v/stable.svg)](https://packagist.org/packages/mamuz/mamuz-blog-feed)
+[![Latest Unstable Version](https://poser.pugx.org/mamuz/mamuz-blog/v/unstable.svg)](https://packagist.org/packages/mamuz/mamuz-blog-feed)
+[![Total Downloads](https://poser.pugx.org/mamuz/mamuz-blog/downloads.svg)](https://packagist.org/packages/mamuz/mamuz-blog-feed)
+[![License](https://poser.pugx.org/mamuz/mamuz-blog/license.svg)](https://packagist.org/packages/mamuz/mamuz-blog-feed)
+
+
 ## Features
 
 - This module provides a plugin for [`mamuz/mamuz-blog`](https://packagist.org/packages/mamuz/mamuz-blog) to create Feeds

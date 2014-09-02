@@ -7,7 +7,7 @@ use Zend\Feed\Writer\Entry;
 use Zend\Feed\Writer\Feed as FeedWriter;
 use Zend\View\Renderer\RendererInterface;
 
-class FeedFactory
+class FeedFactory implements FeedFactoryInterface
 {
     /** @var RendererInterface */
     private $renderer;
@@ -36,10 +36,6 @@ class FeedFactory
         $this->config = $config;
     }
 
-    /**
-     * @param  string|null $tag
-     * @return Feed
-     */
     public function create($tag = null)
     {
         if ($tag) {

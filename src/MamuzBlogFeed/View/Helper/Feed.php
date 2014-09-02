@@ -8,7 +8,7 @@ use Zend\Feed\Writer\Entry;
 use Zend\Feed\Writer\Feed as FeedWriter;
 use Zend\View\Renderer\RendererInterface;
 
-class Feed extends AbstractHelper
+class Feed extends AbstractHelper implements FeedInterface
 {
     /** @var Post[] */
     private $posts;
@@ -45,9 +45,6 @@ class Feed extends AbstractHelper
         return clone $this->entryPrototype;
     }
 
-    /**
-     * @return FeedWriter
-     */
     public function render()
     {
         foreach ($this->posts as $post) {

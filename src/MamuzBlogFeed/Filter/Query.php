@@ -13,7 +13,7 @@ class Query implements FilterInterface
     /**
      * @param array $config
      */
-    public function __construct(array $config)
+    public function __construct(array $config = array())
     {
         $this->config = $config;
     }
