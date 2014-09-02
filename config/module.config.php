@@ -34,17 +34,18 @@ return array(
     'MamuzBlogFeed' => array(
         'default' => array(
             'maxResults'    => 100,
+            'id'            => 'http://local.marco-muths.de/blog-feed',
             'type'          => 'rss',
-            'id'            => '',
-            'copyright'     => '',
-            'language'      => '',
-            'dateCreated'   => '',
-            'dateModified'  => '',
-            'lastBuildDate' => '',
-            'title'         => '',
-            'encoding'      => '',
+            'copyright'     => 'mamuz',
+            'language'      => 'de-DE',
+            'dateCreated'   => new \DateTime,
+            'dateModified'  => new \DateTime,
+            'lastBuildDate' => new \DateTime,
+            'title'         => 'mamuz feed',
+            'description'   => 'description',
+            'link'          => 'http://local.marco-muths.de/blog-feed',
+            /*'encoding'      => '',
             'baseUrl'       => '',
-            'description'   => '',
             'link'          => '',
             'hubs'          => array(),
             'feedLinks'     => array(
@@ -72,7 +73,7 @@ return array(
                     'email' => '',
                     'uri'   => '',
                 ),
-            ),
+            ),*/
         ),
     ),
 );

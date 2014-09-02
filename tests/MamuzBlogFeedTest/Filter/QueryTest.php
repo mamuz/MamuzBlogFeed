@@ -9,12 +9,12 @@ class QueryTest extends \PHPUnit_Framework_TestCase
     /** @var Query */
     protected $fixture;
 
-    /** @var \Doctrine\ORM\QueryBuilder | \Mockery\MockInterface */
+    /** @var \Doctrine\ORM\Query | \Mockery\MockInterface */
     protected $query;
 
     protected function setUp()
     {
-        $this->query = \Mockery::mock('Doctrine\ORM\QueryBuilder');
+        $this->query = \Mockery::mock('Doctrine\ORM\Query');
         $this->query->shouldReceive('setFirstResult')->with(1)->andReturnSelf();
         $this->fixture = new Query();
     }

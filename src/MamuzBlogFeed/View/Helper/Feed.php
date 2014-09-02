@@ -69,7 +69,7 @@ class Feed extends AbstractHelper implements FeedInterface
         $entry->setId($this->getRenderer()->hashId($post->getId()));
         $entry->setTitle($post->getTitle());
         $entry->setLink($this->getRenderer()->permaLinkPost($post));
-        $entry->setDescription($this->getRenderer()->markdown($post->getDescription()));
+        $entry->setDescription($this->getRenderer()->markdown($post->getDescription()) . 'test');
         $entry->setContent($this->getRenderer()->markdown($post->getContent()));
         $entry->setDateModified($post->getModifiedAt());
         $entry->setDateCreated($post->getCreatedAt());

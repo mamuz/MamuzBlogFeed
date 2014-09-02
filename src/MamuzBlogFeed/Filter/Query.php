@@ -2,7 +2,7 @@
 
 namespace MamuzBlogFeed\Filter;
 
-use Doctrine\ORM\QueryBuilder;
+use Doctrine\ORM\Query as QueryBuilder;
 use Zend\Filter\FilterInterface;
 
 class Query implements FilterInterface
