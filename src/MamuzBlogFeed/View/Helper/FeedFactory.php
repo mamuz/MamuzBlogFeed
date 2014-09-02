@@ -85,9 +85,13 @@ class FeedFactory implements FeedFactoryInterface
         foreach ($config as $key => $value) {
             $setMethod = 'set' . ucfirst($key);
             $addMethod = 'add' . ucfirst($key);
-            if (is_callable(array($this->feedWriter, $setMethod))) {
+            if (method_exists($this->feedWriter, $setMethod)
+                && is_callable(array($this->feedWriter, $setMethod))
+            ) {
                 $this->feedWriter->$setMethod($value);
-            } elseif (is_callable(array($this->feedWriter, $addMethod))) {
+            } elseif (method_exists($this->feedWriter, $setMethod)
+                && is_callable(array($this->feedWriter, $addMethod))
+            ) {
                 $this->feedWriter->$addMethod($value);
             }
         }
