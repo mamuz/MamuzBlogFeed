@@ -52,7 +52,7 @@ class Feed extends AbstractHelper implements FeedInterface
             $this->feedWriter->addEntry($entry);
         }
 
-        $this->feedWriter->orderByDate();
+        // $this->feedWriter->orderByDate();
         $this->feedWriter->export($this->feedWriter->getType());
 
         return $this->feedWriter;

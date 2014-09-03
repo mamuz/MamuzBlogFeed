@@ -35,7 +35,7 @@ class Query implements FilterInterface
             $maxResults = 100;
         }
 
-        $value->setFirstResult(1)->setMaxResults($maxResults);
+        $value->setFirstResult(0)->setMaxResults($maxResults);
 
         return $value;
     }

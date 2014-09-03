@@ -66,10 +66,12 @@ class FeedFactory implements FeedFactoryInterface
     private function getConfigBy($tag)
     {
         if (isset($this->config[$tag])) {
-            return (array) $this->config[$tag];
+            $config = $this->config[$tag];
+        } else {
+            $config = $this->config['default'];
         }
 
-        return array();
+        return (array) $config;
     }
 
     /**
@@ -103,7 +105,11 @@ class FeedFactory implements FeedFactoryInterface
     private function createEntryPrototype()
     {
         $this->entryPrototype = $this->feedWriter->createEntry();
-        $this->entryPrototype->setCopyright($this->feedWriter->getCopyright());
-        $this->entryPrototype->addAuthors($this->feedWriter->getAuthors());
+        if ($copyright = $this->feedWriter->getCopyright()) {
+            $this->entryPrototype->setCopyright($copyright);
+        }
+        if ($authors = $this->feedWriter->getAuthors()) {
+            $this->entryPrototype->addAuthors($authors);
+        }
     }
 }
