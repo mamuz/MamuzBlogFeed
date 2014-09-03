@@ -41,7 +41,6 @@ class FeedFactory implements FeedFactoryInterface
         if ($tag) {
             $posts = $this->postService->findPublishedPostsByTag($tag);
         } else {
-            $tag = 'default';
             $posts = $this->postService->findPublishedPosts();
         }
 
@@ -60,18 +59,20 @@ class FeedFactory implements FeedFactoryInterface
     }
 
     /**
-     * @param string $tag
+     * @param string|null $tag
      * @return array
      */
-    private function getConfigBy($tag)
+    private function getConfigBy($tag = null)
     {
-        if (isset($this->config[$tag])) {
-            $config = $this->config[$tag];
-        } else {
-            $config = $this->config['default'];
+        if (!is_string($tag)) {
+            $tag = 'default';
         }
 
-        return (array) $config;
+        if (isset($this->config[$tag])) {
+            return (array) $this->config[$tag];
+        }
+
+        return array();
     }
 
     /**
