@@ -14,7 +14,7 @@ class QueryTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->query = \Mockery::mock('Doctrine\ORM\Query');
+        $this->query = \Mockery::mock('Doctrine\ORM\AbstractQuery');
         $this->query->shouldReceive('setFirstResult')->with(1)->andReturnSelf();
         $this->fixture = new Query();
     }
