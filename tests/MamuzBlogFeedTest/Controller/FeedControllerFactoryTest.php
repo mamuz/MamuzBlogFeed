@@ -21,7 +21,6 @@ class FeedControllerFactoryTest extends \PHPUnit_Framework_TestCase
 
     public function testCreation()
     {
-        $config = array('MamuzBlogFeed' => array());
         $queryInterface = \Mockery::mock('MamuzBlog\Feature\PostQueryInterface');
         $renderer = \Mockery::mock('Zend\View\Renderer\RendererInterface');
         $viewHelperManager = \Mockery::mock('Zend\View\HelperPluginManager');
@@ -33,7 +32,6 @@ class FeedControllerFactoryTest extends \PHPUnit_Framework_TestCase
         $sm->shouldReceive('get')->with('MamuzBlog\DomainManager')->andReturn($sm);
         $sm->shouldReceive('get')->with('MamuzBlog\Service\PostQuery')->andReturn($queryInterface);
         $sm->shouldReceive('get')->with('MamuzBlogFeed\Listener\Aggregate')->andReturn($listener);
-        $sm->shouldReceive('get')->with('Config')->andReturn($config);
 
         $controller = $this->fixture->createService($sm);
 
@@ -47,7 +45,6 @@ class FeedControllerFactoryTest extends \PHPUnit_Framework_TestCase
         $sl = \Mockery::mock('Zend\ServiceManager\AbstractPluginManager');
         $sl->shouldReceive('getServiceLocator')->andReturn($sm);
 
-        $config = array('MamuzBlogFeed' => array());
         $queryInterface = \Mockery::mock('MamuzBlog\Feature\PostQueryInterface');
         $renderer = \Mockery::mock('Zend\View\Renderer\RendererInterface');
         $viewHelperManager = \Mockery::mock('Zend\View\HelperPluginManager');
@@ -58,7 +55,6 @@ class FeedControllerFactoryTest extends \PHPUnit_Framework_TestCase
         $sm->shouldReceive('get')->with('MamuzBlog\DomainManager')->andReturn($sm);
         $sm->shouldReceive('get')->with('MamuzBlog\Service\PostQuery')->andReturn($queryInterface);
         $sm->shouldReceive('get')->with('MamuzBlogFeed\Listener\Aggregate')->andReturn($listener);
-        $sm->shouldReceive('get')->with('Config')->andReturn($config);
 
         $controller = $this->fixture->createService($sl);
 

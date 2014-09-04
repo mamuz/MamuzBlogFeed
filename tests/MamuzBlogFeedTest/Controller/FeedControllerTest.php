@@ -26,11 +26,8 @@ class FeedControllerTest extends \PHPUnit_Framework_TestCase
     /** @var MvcEvent */
     protected $event;
 
-    /** @var \MamuzBlogFeed\View\Helper\FeedFactoryInterface | \Mockery\MockInterface */
+    /** @var \MamuzBlogFeed\Feed\Writer\FactoryInterface | \Mockery\MockInterface */
     protected $feedFactory;
-
-    /** @var \MamuzBlogFeed\View\Helper\FeedInterface | \Mockery\MockInterface */
-    protected $feed;
 
     /** @var \Zend\Feed\Writer\Feed | \Mockery\MockInterface */
     protected $feedWriter;
@@ -38,21 +35,35 @@ class FeedControllerTest extends \PHPUnit_Framework_TestCase
     /** @var \Zend\EventManager\ListenerAggregateInterface | \Mockery\MockInterface */
     protected $listener;
 
+    /** @var \Zend\ServiceManager\ServiceLocatorInterface | \Mockery\MockInterface */
+    protected $serviceLocator;
+
     /** @var \Zend\Mvc\Controller\Plugin\Params | \Mockery\MockInterface */
     protected $params;
 
     /** @var \Zend\View\Model\ModelInterface | \Mockery\MockInterface */
     protected $viewModel;
 
+    /** @var \MamuzBlog\Feature\PostQueryInterface | \Mockery\MockInterface */
+    protected $postService;
+
+    /** @var \ArrayObject */
+    protected $posts;
+
+    /** @var array */
+    protected $config = array('MamuzBlogFeed' => array('default' => array(1, 2), 'foo' => array('bar')));
+
     protected function setUp()
     {
+        $this->posts = new \ArrayObject;
+        $this->postService = \Mockery::mock('MamuzBlog\Feature\PostQueryInterface');
+        $this->serviceLocator = \Mockery::mock('Zend\ServiceManager\ServiceLocatorInterface');
+        $this->serviceLocator->shouldReceive('get')->with('Config')->andReturn($this->config);
         $this->feedWriter = \Mockery::mock('Zend\Feed\Writer\Feed');
-        $this->feed = \Mockery::mock('MamuzBlogFeed\View\Helper\FeedInterface');
-        $this->feed->shouldReceive('render')->andReturn($this->feedWriter);
-        $this->feedFactory = \Mockery::mock('MamuzBlogFeed\View\Helper\FeedFactoryInterface');
+        $this->feedFactory = \Mockery::mock('MamuzBlogFeed\Feed\Writer\FactoryInterface');
         $this->listener = \Mockery::mock('Zend\EventManager\ListenerAggregateInterface')->shouldIgnoreMissing();
 
-        $this->fixture = new FeedController($this->feedFactory, $this->listener);
+        $this->fixture = new FeedController($this->postService, $this->listener, $this->feedFactory);
         $this->request = new Request();
         $this->routeMatch = new RouteMatch(array('controller' => 'posts'));
         $this->event = new MvcEvent();
@@ -67,6 +78,7 @@ class FeedControllerTest extends \PHPUnit_Framework_TestCase
         $this->event->setRouter($router);
         $this->event->setRouteMatch($this->routeMatch);
         $this->fixture->setEvent($this->event);
+        $this->fixture->setServiceLocator($this->serviceLocator);
     }
 
     public function testExtendingZendActionController()
@@ -74,15 +86,55 @@ class FeedControllerTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('Zend\Mvc\Controller\AbstractActionController', $this->fixture);
     }
 
-    public function testPostsCanBeAccessed()
+    public function testPostsCanBeAccessedWithNullTag()
     {
         $this->routeMatch->setParam('action', 'posts');
         $this->params->shouldReceive('fromRoute')->with('tag')->andReturn(null);
 
+        $this->postService->shouldReceive('findPublishedPosts')->andReturn($this->posts);
+
         $this->feedFactory
             ->shouldReceive('create')
-            ->with(null)
-            ->andReturn($this->feed);
+            ->with($this->config['MamuzBlogFeed']['default'], $this->posts)
+            ->andReturn($this->feedWriter);
+
+        $result = $this->fixture->dispatch($this->request);
+        $response = $this->fixture->getResponse();
+
+        $this->assertSame($this->feedWriter, $result->getFeed());
+        $this->assertEquals(200, $response->getStatusCode());
+    }
+
+    public function testPostsCanBeAccessedWithTag()
+    {
+        $this->routeMatch->setParam('action', 'posts');
+        $this->params->shouldReceive('fromRoute')->with('tag')->andReturn('foo');
+
+        $this->postService->shouldReceive('findPublishedPostsByTag')->with('foo')->andReturn($this->posts);
+
+        $this->feedFactory
+            ->shouldReceive('create')
+            ->with($this->config['MamuzBlogFeed']['foo'], $this->posts)
+            ->andReturn($this->feedWriter);
+
+        $result = $this->fixture->dispatch($this->request);
+        $response = $this->fixture->getResponse();
+
+        $this->assertSame($this->feedWriter, $result->getFeed());
+        $this->assertEquals(200, $response->getStatusCode());
+    }
+
+    public function testPostsCanBeAccessedWithTagWithoutFeedOptions()
+    {
+        $this->routeMatch->setParam('action', 'posts');
+        $this->params->shouldReceive('fromRoute')->with('tag')->andReturn('bar');
+
+        $this->postService->shouldReceive('findPublishedPostsByTag')->with('bar')->andReturn($this->posts);
+
+        $this->feedFactory
+            ->shouldReceive('create')
+            ->with(array(), $this->posts)
+            ->andReturn($this->feedWriter);
 
         $result = $this->fixture->dispatch($this->request);
         $response = $this->fixture->getResponse();

@@ -2,7 +2,9 @@
 
 namespace MamuzBlogFeed\Controller;
 
-use MamuzBlogFeed\View\Helper\FeedFactory;
+use MamuzBlogFeed\Extractor\FeedEntry;
+use MamuzBlogFeed\Hydrator\Mutator;
+use MamuzBlogFeed\Feed\Writer\Factory;
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorAwareInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
@@ -23,16 +25,15 @@ class FeedControllerFactory implements FactoryInterface
         $domainManager = $serviceLocator->get('MamuzBlog\DomainManager');
         /** @var \MamuzBlog\Feature\PostQueryInterface $postService */
         $postService = $domainManager->get('MamuzBlog\Service\PostQuery');
-        /** @var \Zend\View\HelperPluginManager $viewHelperManager */
-        $viewHelperManager = $serviceLocator->get('ViewHelperManager');
-
-        $config = $serviceLocator->get('Config')['MamuzBlogFeed'];
-
-        $feedFactory = new FeedFactory($postService, $viewHelperManager->getRenderer(), $config);
 
         /* @var \Zend\EventManager\ListenerAggregateInterface $listenerAggregate */
         $listenerAggregate = $domainManager->get('MamuzBlogFeed\Listener\Aggregate');
 
-        return new FeedController($feedFactory, $listenerAggregate);
+        /** @var \Zend\View\HelperPluginManager $viewHelperManager */
+        $viewHelperManager = $serviceLocator->get('ViewHelperManager');
+        $postExtractor = new FeedEntry($viewHelperManager->getRenderer());
+        $feedFactory = new Factory($postExtractor, new Mutator);
+
+        return new FeedController($postService, $listenerAggregate, $feedFactory);
     }
 }
