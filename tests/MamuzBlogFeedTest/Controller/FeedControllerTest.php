@@ -53,6 +53,9 @@ class FeedControllerTest extends \PHPUnit_Framework_TestCase
     /** @var \MamuzBlogFeed\Options\ConfigProviderInterface |\Mockery\MockInterface */
     protected $configProvider;
 
+    /** @var \MamuzBlogFeed\Controller\Plugin\HeadFeed |\Mockery\MockInterface */
+    protected $headFeed;
+
     protected function setUp()
     {
         $this->posts = new \ArrayObject;
@@ -75,10 +78,13 @@ class FeedControllerTest extends \PHPUnit_Framework_TestCase
         $this->event = new MvcEvent();
         $router = HttpRouter::factory();
 
+        $this->headFeed = \Mockery::mock('MamuzBlogFeed\Controller\Plugin\HeadFeed');
+        $this->headFeed->shouldReceive('add')->with($this->feedWriter);
         $this->params = \Mockery::mock('Zend\Mvc\Controller\Plugin\Params');
         $this->params->shouldReceive('__invoke')->andReturn($this->params);
         $pluginManager = \Mockery::mock('Zend\Mvc\Controller\PluginManager')->shouldIgnoreMissing();
         $pluginManager->shouldReceive('get')->with('params', null)->andReturn($this->params);
+        $pluginManager->shouldReceive('get')->with('headFeed', null)->andReturn($this->headFeed);
 
         $this->fixture->setPluginManager($pluginManager);
         $this->event->setRouter($router);

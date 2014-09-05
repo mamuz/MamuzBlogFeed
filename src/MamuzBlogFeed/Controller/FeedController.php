@@ -10,6 +10,9 @@ use Zend\Mvc\Controller\AbstractActionController;
 use Zend\Mvc\MvcEvent;
 use Zend\View\Model;
 
+/**
+ * @method \MamuzBlogFeed\Controller\Plugin\HeadFeed headFeed())
+ */
 class FeedController extends AbstractActionController
 {
     /** @var PostQueryInterface */
@@ -62,6 +65,8 @@ class FeedController extends AbstractActionController
         $feedOptions = $this->configProvider->getFor($tag);
         /** @var \IteratorAggregate $posts */
         $feed = $this->feedFactory->create($feedOptions, $posts);
+
+        $this->headFeed()->add($feed);
 
         $feedmodel = new Model\FeedModel;
         $feedmodel->setFeed($feed);

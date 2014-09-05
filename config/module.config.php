@@ -1,7 +1,7 @@
 <?php
 
 return array(
-    'router'        => array(
+    'router'             => array(
         'routes' => array(
             'blogFeedPosts' => array(
                 'type'    => 'segment',
@@ -18,20 +18,25 @@ return array(
             ),
         ),
     ),
-    'controllers'   => array(
+    'controllers'        => array(
         'factories' => array(
             'MamuzBlogFeed\Controller\Feed' => 'MamuzBlogFeed\Controller\FeedControllerFactory',
         ),
     ),
-    'blog_domain'   => array(
+    'controller_plugins' => array(
+        'factories' => array(
+            'headFeed' => 'MamuzBlogFeed\Controller\Plugin\HeadFeedFactory',
+        )
+    ),
+    'blog_domain'        => array(
         'factories' => array(
             'MamuzBlogFeed\Listener\Aggregate' => 'MamuzBlogFeed\Listener\AggregateFactory',
         ),
     ),
-    'view_manager'  => array(
+    'view_manager'       => array(
         'strategies' => array('ViewFeedStrategy'),
     ),
-    'MamuzBlogFeed' => array(
+    'MamuzBlogFeed'      => array(
         'default' => array(
             'maxResults'    => 100,
             'id'            => 'http://local.marco-muths.de/blog-feed',
