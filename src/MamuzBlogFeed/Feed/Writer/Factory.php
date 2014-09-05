@@ -24,10 +24,24 @@ class Factory implements FactoryInterface
     /** @var HydrationInterface */
     private $hydrator;
 
-    public function __construct(ExtractionInterface $postExtractor, HydrationInterface $hydrator)
-    {
+    /**
+     * @param ExtractionInterface $postExtractor
+     * @param HydrationInterface  $hydrator
+     * @param Feed                $feed
+     */
+    public function __construct(
+        ExtractionInterface $postExtractor,
+        HydrationInterface $hydrator,
+        Feed $feed = null
+    ) {
         $this->postExtractor = $postExtractor;
         $this->hydrator = $hydrator;
+
+        if ($feed instanceof Feed) {
+            $this->feed = $feed;
+        } else {
+            $this->feed = new Feed;
+        }
     }
 
     public function create(array $feedOptions, \IteratorAggregate $entries)
@@ -47,7 +61,6 @@ class Factory implements FactoryInterface
      */
     private function createFeed(array $feedOptions)
     {
-        $this->feed = new Feed;
         $this->feed->setType('rss');
         $this->feed->setDateModified(time());
         $this->hydrator->hydrate(

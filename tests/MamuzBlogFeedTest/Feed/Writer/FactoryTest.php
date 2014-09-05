@@ -49,4 +49,41 @@ class FactoryTest extends \PHPUnit_Framework_TestCase
 
         $this->assertInstanceOf('Zend\Feed\Writer\Feed', $this->fixture->create($options, $posts));
     }
+
+    public function testCreationWithUserFeed()
+    {
+        $entry = \Mockery::mock('Zend\Feed\Writer\Entry');
+        $entry->shouldReceive('setCopyright')->with('foo');
+        $entry->shouldReceive('addAuthors')->with(array(1, 2));
+
+        $feed = \Mockery::mock('Zend\Feed\Writer\Feed');
+        $feed->shouldReceive('getCopyright')->andReturn('foo');
+        $feed->shouldReceive('getAuthors')->andReturn(array(1, 2));
+        $feed->shouldReceive('setType')->with('rss');
+        $feed->shouldReceive('setDateModified');
+        $feed->shouldReceive('addEntry');
+        $feed->shouldReceive('createEntry')->andReturn($entry);
+
+        $this->fixture = new Factory($this->extractor, $this->hydrator, $feed);
+
+
+        $post = \Mockery::mock('MamuzBlog\Entity\Post');
+        $options = array('foo');
+        $this->extractor->shouldReceive('extract')->with($post)->andReturn($options);
+        $this->hydrator->shouldReceive('hydrate')->andReturnUsing(
+            function ($data, $object) use ($options, $feed) {
+                if ($object instanceof \Zend\Feed\Writer\Feed) {
+                    $this->assertSame($feed, $object);
+                } else {
+                    $this->assertInstanceOf('Zend\Feed\Writer\Entry', $object);
+                }
+                $this->assertSame($options, $data);
+                return $object;
+            }
+        );
+
+        $posts = new \ArrayObject(array($post));
+
+        $this->assertInstanceOf('Zend\Feed\Writer\Feed', $this->fixture->create($options, $posts));
+    }
 }

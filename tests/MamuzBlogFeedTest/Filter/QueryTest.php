@@ -21,8 +21,8 @@ class QueryTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $this->query = \Mockery::mock('Doctrine\ORM\AbstractQuery');
-        $this->query->shouldReceive('setFirstResult')->with(1)->andReturnSelf();
-        $this->query->shouldReceive('getParameter')->with('tag')->andReturnNull($this->tag);
+        $this->query->shouldReceive('setFirstResult')->with(0)->andReturnSelf();
+        $this->query->shouldReceive('getParameter')->with('tag')->andReturn($this->tag);
         $this->configProvider = \Mockery::mock('MamuzBlogFeed\Options\ConfigProviderInterface');
         $this->fixture = new Query($this->configProvider);
     }
