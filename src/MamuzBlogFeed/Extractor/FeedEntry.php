@@ -25,6 +25,15 @@ class FeedEntry implements ExtractionInterface
             return array();
         }
 
+        return $this->getArrayCopy($object);
+    }
+
+    /**
+     * @param Post $object
+     * @return array
+     */
+    private function getArrayCopy(Post $object)
+    {
         /** @var \MamuzBlog\View\Renderer\PhpRenderer $renderer */
         $renderer = $this->renderer;
 
