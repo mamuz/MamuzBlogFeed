@@ -25,7 +25,14 @@ class FeedEntry implements ExtractionInterface
             return array();
         }
 
-        return $this->getArrayCopy($object);
+        $data = $this->getArrayCopy($object);
+
+        $categories = $this->extractCategoriesFrom($object);
+        if (!empty($categories)) {
+            $data['categories'] = $categories;
+        }
+
+        return $data;
     }
 
     /**
@@ -47,6 +54,18 @@ class FeedEntry implements ExtractionInterface
             'dateCreated'  => $object->getCreatedAt(),
         );
 
+        return $data;
+    }
+
+    /**
+     * @param Post $object
+     * @return array
+     */
+    private function extractCategoriesFrom(Post $object)
+    {
+        /** @var \MamuzBlog\View\Renderer\PhpRenderer $renderer */
+        $renderer = $this->renderer;
+
         $categories = array();
         foreach ($object->getTags() as $tag) {
             $categories[] = array(
@@ -55,10 +74,6 @@ class FeedEntry implements ExtractionInterface
             );
         }
 
-        if (!empty($categories)) {
-            $data['categories'] = $categories;
-        }
-
-        return $data;
+        return $categories;
     }
 }
