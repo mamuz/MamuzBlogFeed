@@ -66,7 +66,6 @@ class FactoryTest extends \PHPUnit_Framework_TestCase
 
         $this->fixture = new Factory($this->extractor, $this->hydrator, $feed);
 
-
         $post = \Mockery::mock('MamuzBlog\Entity\Post');
         $options = array('foo');
         $this->extractor->shouldReceive('extract')->with($post)->andReturn($options);
