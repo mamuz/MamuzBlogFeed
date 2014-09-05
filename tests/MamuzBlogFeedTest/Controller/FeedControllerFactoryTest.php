@@ -32,6 +32,7 @@ class FeedControllerFactoryTest extends \PHPUnit_Framework_TestCase
         $sm->shouldReceive('get')->with('MamuzBlog\DomainManager')->andReturn($sm);
         $sm->shouldReceive('get')->with('MamuzBlog\Service\PostQuery')->andReturn($queryInterface);
         $sm->shouldReceive('get')->with('MamuzBlogFeed\Listener\Aggregate')->andReturn($listener);
+        $sm->shouldReceive('get')->with('Config')->andReturn(array('MamuzBlogFeed' => array()));
 
         $controller = $this->fixture->createService($sm);
 
@@ -55,6 +56,7 @@ class FeedControllerFactoryTest extends \PHPUnit_Framework_TestCase
         $sm->shouldReceive('get')->with('MamuzBlog\DomainManager')->andReturn($sm);
         $sm->shouldReceive('get')->with('MamuzBlog\Service\PostQuery')->andReturn($queryInterface);
         $sm->shouldReceive('get')->with('MamuzBlogFeed\Listener\Aggregate')->andReturn($listener);
+        $sm->shouldReceive('get')->with('Config')->andReturn(array('MamuzBlogFeed' => array()));
 
         $controller = $this->fixture->createService($sl);
 

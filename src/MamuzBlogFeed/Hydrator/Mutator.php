@@ -15,7 +15,7 @@ class Mutator implements HydrationInterface
                 && is_callable(array($object, $setMethod))
             ) {
                 $object->$setMethod($value);
-            } elseif (method_exists($object, $setMethod)
+            } elseif (method_exists($object, $addMethod)
                 && is_callable(array($object, $addMethod))
             ) {
                 $object->$addMethod($value);

@@ -3,6 +3,7 @@
 namespace MamuzBlogFeed\Listener;
 
 use MamuzBlogFeed\Filter\Query;
+use MamuzBlogFeed\Options\ConfigProvider;
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorAwareInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
@@ -20,7 +21,9 @@ class AggregateFactory implements FactoryInterface
         }
 
         $config = $serviceLocator->get('Config')['MamuzBlogFeed'];
-        $queryFilter = new Query($config);
+        $configProvider = new ConfigProvider($config);
+
+        $queryFilter = new Query($configProvider);
 
         return new Aggregate($queryFilter);
     }

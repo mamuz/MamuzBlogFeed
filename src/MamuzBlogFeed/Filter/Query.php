@@ -3,19 +3,25 @@
 namespace MamuzBlogFeed\Filter;
 
 use Doctrine\ORM\Query as QueryBuilder;
+use MamuzBlogFeed\Options\ConfigProviderInterface;
 use Zend\Filter\FilterInterface;
 
 class Query implements FilterInterface
 {
-    /** @var array */
-    private $config = array();
+    /** @var ConfigProviderInterface */
+    private $configProvider;
+
+    /** @var int */
+    private $defaultMaxResults;
 
     /**
-     * @param array $config
+     * @param ConfigProviderInterface $configProvider
+     * @param int                     $defaultMaxResults
      */
-    public function __construct(array $config = array())
+    public function __construct(ConfigProviderInterface $configProvider, $defaultMaxResults = 100)
     {
-        $this->config = $config;
+        $this->configProvider = $configProvider;
+        $this->defaultMaxResults = $defaultMaxResults;
     }
 
     public function filter($value)
@@ -24,19 +30,28 @@ class Query implements FilterInterface
             return $value;
         }
 
-        $tag = $value->getParameter('tag');
-        if ($tag == null) {
-            $tag = 'default';
-        }
-
-        if (isset($this->config[$tag]['maxResults'])) {
-            $maxResults = (int) $this->config[$tag]['maxResults'];
-        } else {
-            $maxResults = 100;
-        }
+        $maxResults = $this->getMaxResultsFor($value->getParameter('tag'));
 
         $value->setFirstResult(0)->setMaxResults($maxResults);
 
         return $value;
     }
+
+    /**
+     * @param mixed $tag
+     * @return int
+     */
+    private function getMaxResultsFor($tag)
+    {
+        $config = $this->configProvider->getFor($tag);
+
+        if (isset($config['maxResults'])) {
+            $maxResults = (int) $config['maxResults'];
+        } else {
+            $maxResults = $this->defaultMaxResults;
+        }
+
+        return $maxResults;
+    }
+
 }

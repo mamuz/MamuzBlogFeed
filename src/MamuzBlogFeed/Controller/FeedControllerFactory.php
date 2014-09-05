@@ -5,6 +5,7 @@ namespace MamuzBlogFeed\Controller;
 use MamuzBlogFeed\Extractor\FeedEntry;
 use MamuzBlogFeed\Hydrator\Mutator;
 use MamuzBlogFeed\Feed\Writer\Factory;
+use MamuzBlogFeed\Options\ConfigProvider;
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorAwareInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
@@ -34,6 +35,9 @@ class FeedControllerFactory implements FactoryInterface
         $postExtractor = new FeedEntry($viewHelperManager->getRenderer());
         $feedFactory = new Factory($postExtractor, new Mutator);
 
-        return new FeedController($postService, $listenerAggregate, $feedFactory);
+        $config = $serviceLocator->get('Config')['MamuzBlogFeed'];
+        $configProvider = new ConfigProvider($config);
+
+        return new FeedController($postService, $listenerAggregate, $feedFactory, $configProvider);
     }
 }

@@ -4,6 +4,7 @@ namespace MamuzBlogFeed\Controller;
 
 use MamuzBlog\Feature\PostQueryInterface;
 use MamuzBlogFeed\Feed\Writer\FactoryInterface;
+use MamuzBlogFeed\Options\ConfigProviderInterface;
 use Zend\EventManager\ListenerAggregateInterface as Listener;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\Mvc\MvcEvent;
@@ -20,19 +21,25 @@ class FeedController extends AbstractActionController
     /** @var FactoryInterface */
     private $feedFactory;
 
+    /** @var ConfigProviderInterface */
+    private $configProvider;
+
     /**
-     * @param PostQueryInterface $postService
-     * @param Listener           $listener
-     * @param FactoryInterface   $feedFactory
+     * @param PostQueryInterface      $postService
+     * @param Listener                $listener
+     * @param FactoryInterface        $feedFactory
+     * @param ConfigProviderInterface $configProvider
      */
     public function __construct(
         PostQueryInterface $postService,
         Listener $listener,
-        FactoryInterface $feedFactory
+        FactoryInterface $feedFactory,
+        ConfigProviderInterface $configProvider
     ) {
         $this->postService = $postService;
         $this->listener = $listener;
         $this->feedFactory = $feedFactory;
+        $this->configProvider = $configProvider;
     }
 
     public function onDispatch(MvcEvent $event)
@@ -52,31 +59,12 @@ class FeedController extends AbstractActionController
             $posts = $this->postService->findPublishedPosts();
         }
 
-        $feedOptions = $this->getFeedOptionsBy($tag);
+        $feedOptions = $this->configProvider->getFor($tag);
         $feed = $this->feedFactory->create($feedOptions, $posts);
 
         $feedmodel = new Model\FeedModel;
         $feedmodel->setFeed($feed);
 
         return $feedmodel;
-    }
-
-    /**
-     * @param string|null $tag
-     * @return array
-     */
-    private function getFeedOptionsBy($tag = null)
-    {
-        if (!is_string($tag)) {
-            $tag = 'default';
-        }
-
-        $config = $this->getServiceLocator()->get('Config')['MamuzBlogFeed'];
-
-        if (isset($config[$tag])) {
-            return (array) $config[$tag];
-        }
-
-        return array();
     }
 }

@@ -12,11 +12,19 @@ class QueryTest extends \PHPUnit_Framework_TestCase
     /** @var \Doctrine\ORM\Query | \Mockery\MockInterface */
     protected $query;
 
+    /** @var \MamuzBlogFeed\Options\ConfigProviderInterface |\Mockery\MockInterface */
+    protected $configProvider;
+
+    /** @var string */
+    protected $tag = 'foo';
+
     protected function setUp()
     {
         $this->query = \Mockery::mock('Doctrine\ORM\AbstractQuery');
         $this->query->shouldReceive('setFirstResult')->with(1)->andReturnSelf();
-        $this->fixture = new Query();
+        $this->query->shouldReceive('getParameter')->with('tag')->andReturnNull($this->tag);
+        $this->configProvider = \Mockery::mock('MamuzBlogFeed\Options\ConfigProviderInterface');
+        $this->fixture = new Query($this->configProvider);
     }
 
     public function testImplementingFilterInterface()
@@ -30,36 +38,27 @@ class QueryTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($value, $this->fixture->filter($value));
     }
 
-    public function testFilteringWithoutTagParameter()
+    public function testFilteringWithDefaultMaxResults()
     {
-        $this->query->shouldReceive('getParameter')->with('tag')->andReturnNull();
+        $this->configProvider->shouldReceive('getFor')->with($this->tag)->andReturn(array());
         $this->query->shouldReceive('setMaxResults')->with(100);
 
         $this->assertSame($this->query, $this->fixture->filter($this->query));
     }
 
-    public function testFilteringWithoutTagParameterAndDefaultConfig()
+    public function testFilteringWithUserDefaultMaxResults()
     {
-        $this->fixture = new Query(array('default' => array('maxResults' => 200)));
-        $this->query->shouldReceive('getParameter')->with('tag')->andReturnNull();
-        $this->query->shouldReceive('setMaxResults')->with(200);
+        $this->fixture = new Query($this->configProvider, 89);
+        $this->configProvider->shouldReceive('getFor')->with($this->tag)->andReturn(array());
+        $this->query->shouldReceive('setMaxResults')->with(89);
 
         $this->assertSame($this->query, $this->fixture->filter($this->query));
     }
 
-    public function testFilteringWithTagParameterAndConfig()
+    public function testFilteringWithMaxResultsFromConfig()
     {
-        $this->fixture = new Query(array('foo' => array('maxResults' => 200)));
-        $this->query->shouldReceive('getParameter')->with('tag')->andReturn('foo');
-        $this->query->shouldReceive('setMaxResults')->with(200);
-
-        $this->assertSame($this->query, $this->fixture->filter($this->query));
-    }
-
-    public function testFilteringWithTagParameterAndWithoutConfig()
-    {
-        $this->query->shouldReceive('getParameter')->with('tag')->andReturn('foo');
-        $this->query->shouldReceive('setMaxResults')->with(100);
+        $this->configProvider->shouldReceive('getFor')->with($this->tag)->andReturn(array('maxResults' => 400));
+        $this->query->shouldReceive('setMaxResults')->with(400);
 
         $this->assertSame($this->query, $this->fixture->filter($this->query));
     }
