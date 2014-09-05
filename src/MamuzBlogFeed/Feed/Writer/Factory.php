@@ -12,7 +12,7 @@ class Factory implements FactoryInterface
     /** @var Feed */
     private $feed;
 
-    /** @var \MamuzBlog\Entity\Post[] */
+    /** @var \IteratorAggregate */
     private $entries;
 
     /** @var Entry */

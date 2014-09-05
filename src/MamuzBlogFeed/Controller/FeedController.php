@@ -60,6 +60,7 @@ class FeedController extends AbstractActionController
         }
 
         $feedOptions = $this->configProvider->getFor($tag);
+        /** @var \IteratorAggregate $posts */
         $feed = $this->feedFactory->create($feedOptions, $posts);
 
         $feedmodel = new Model\FeedModel;

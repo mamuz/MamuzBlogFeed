@@ -26,12 +26,15 @@ class FeedEntry implements ExtractionInterface
             return array();
         }
 
+        /** @var \MamuzBlog\View\Renderer\PhpRenderer $renderer */
+        $renderer = $this->renderer;
+
         $data = array(
-            'id'           => $this->getRenderer()->hashId($object->getId()),
-            'link'         => $this->getRenderer()->permaLinkPost($object),
+            'id'           => $renderer->hashId($object->getId()),
+            'link'         => $renderer->permaLinkPost($object),
             'title'        => $object->getTitle(),
-            'description'  => $this->getRenderer()->markdown($object->getDescription()),
-            'content'      => $this->getRenderer()->markdown($object->getContent()),
+            'description'  => $renderer->markdown($object->getDescription()),
+            'content'      => $renderer->markdown($object->getContent()),
             'dateModified' => $object->getModifiedAt(),
             'dateCreated'  => $object->getCreatedAt(),
         );
@@ -40,7 +43,7 @@ class FeedEntry implements ExtractionInterface
         foreach ($object->getTags() as $tag) {
             $categories[] = array(
                 'term'   => $tag->getName(),
-                'scheme' => $this->getRenderer()->permaLinkTag($tag->getName()),
+                'scheme' => $renderer->permaLinkTag($tag->getName()),
             );
         }
 
@@ -49,13 +52,5 @@ class FeedEntry implements ExtractionInterface
         }
 
         return $data;
-    }
-
-    /**
-     * @return RendererInterface | \MamuzBlog\View\Renderer\PhpRenderer
-     */
-    private function getRenderer()
-    {
-        return $this->renderer;
     }
 }
