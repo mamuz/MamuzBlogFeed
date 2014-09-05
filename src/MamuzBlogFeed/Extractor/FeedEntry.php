@@ -2,7 +2,6 @@
 
 namespace MamuzBlogFeed\Extractor;
 
-use Doctrine\ORM\Query as QueryBuilder;
 use MamuzBlog\Entity\Post;
 use Zend\Stdlib\Extractor\ExtractionInterface;
 use Zend\View\Renderer\RendererInterface;
