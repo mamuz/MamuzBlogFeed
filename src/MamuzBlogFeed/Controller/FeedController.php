@@ -2,47 +2,26 @@
 
 namespace MamuzBlogFeed\Controller;
 
-use MamuzBlog\Feature\PostQueryInterface;
-use MamuzBlogFeed\Feed\Writer\FactoryInterface;
-use MamuzBlogFeed\Options\ConfigProviderInterface;
 use Zend\EventManager\ListenerAggregateInterface as Listener;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\Mvc\MvcEvent;
 use Zend\View\Model;
 
 /**
- * @method \MamuzBlogFeed\Controller\Plugin\HeadFeed headFeed())
+ * @method \MamuzBlogFeed\Controller\Plugin\HeadFeedLink headFeedLink())
+ * @method \MamuzBlogFeed\Controller\Plugin\Feed feed())
  */
 class FeedController extends AbstractActionController
 {
-    /** @var PostQueryInterface */
-    private $postService;
-
     /** @var Listener */
     private $listener;
 
-    /** @var FactoryInterface */
-    private $feedFactory;
-
-    /** @var ConfigProviderInterface */
-    private $configProvider;
-
     /**
-     * @param PostQueryInterface      $postService
-     * @param Listener                $listener
-     * @param FactoryInterface        $feedFactory
-     * @param ConfigProviderInterface $configProvider
+     * @param Listener $listener
      */
-    public function __construct(
-        PostQueryInterface $postService,
-        Listener $listener,
-        FactoryInterface $feedFactory,
-        ConfigProviderInterface $configProvider
-    ) {
-        $this->postService = $postService;
+    public function __construct(Listener $listener)
+    {
         $this->listener = $listener;
-        $this->feedFactory = $feedFactory;
-        $this->configProvider = $configProvider;
     }
 
     public function onDispatch(MvcEvent $event)
@@ -56,17 +35,8 @@ class FeedController extends AbstractActionController
      */
     public function postsAction()
     {
-        if ($tag = $this->params()->fromRoute('tag')) {
-            $posts = $this->postService->findPublishedPostsByTag($tag);
-        } else {
-            $posts = $this->postService->findPublishedPosts();
-        }
-
-        $feedOptions = $this->configProvider->getFor($tag);
-        /** @var \IteratorAggregate $posts */
-        $feed = $this->feedFactory->create($feedOptions, $posts);
-
-        $this->headFeed()->add($feed);
+        $feed = $this->feed()->create();
+        $this->headFeedLink()->add($feed);
 
         $feedmodel = new Model\FeedModel;
         $feedmodel->setFeed($feed);

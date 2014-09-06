@@ -6,7 +6,7 @@ use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorAwareInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
-class HeadFeedFactory implements FactoryInterface
+class HeadFeedLinkFactory implements FactoryInterface
 {
     /**
      * {@inheritdoc}
@@ -23,6 +23,6 @@ class HeadFeedFactory implements FactoryInterface
         /** @var \Zend\View\Helper\HeadLink $headLink */
         $headLink = $viewHelperManager->get('HeadLink');
 
-        return new HeadFeed($headLink);
+        return new HeadFeedLink($headLink);
     }
 }

@@ -2,11 +2,11 @@
 
 namespace MamuzBlogFeedTest\Controller\Plugin;
 
-use MamuzBlogFeed\Controller\Plugin\HeadFeed;
+use MamuzBlogFeed\Controller\Plugin\HeadFeedLink;
 
-class HeadFeedTest extends \PHPUnit_Framework_TestCase
+class HeadFeedLinkTest extends \PHPUnit_Framework_TestCase
 {
-    /** @var HeadFeed */
+    /** @var HeadFeedLink */
     protected $fixture;
 
     /** @var \Zend\View\Helper\HeadLink | \Mockery\MockInterface */
@@ -15,7 +15,7 @@ class HeadFeedTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $this->headLink = \Mockery::mock('Zend\View\Helper\HeadLink');
-        $this->fixture = new HeadFeed($this->headLink);
+        $this->fixture = new HeadFeedLink($this->headLink);
     }
 
     public function testImplementingFactoryInterface()

@@ -25,7 +25,8 @@ return array(
     ),
     'controller_plugins' => array(
         'factories' => array(
-            'headFeed' => 'MamuzBlogFeed\Controller\Plugin\HeadFeedFactory',
+            'feed' => 'MamuzBlogFeed\Controller\Plugin\FeedFactory',
+            'headFeedLink' => 'MamuzBlogFeed\Controller\Plugin\HeadFeedLinkFactory',
         )
     ),
     'blog_domain'        => array(

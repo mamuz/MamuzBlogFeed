@@ -2,16 +2,16 @@
 
 namespace MamuzBlogFeedTest\Controller\Plugin;
 
-use MamuzBlogFeed\Controller\Plugin\HeadFeedFactory;
+use MamuzBlogFeed\Controller\Plugin\HeadFeedLinkFactory;
 
-class HeadFeedFactoryTest extends \PHPUnit_Framework_TestCase
+class HeadFeedLinkFactoryTest extends \PHPUnit_Framework_TestCase
 {
-    /** @var HeadFeedFactory */
+    /** @var HeadFeedLinkFactory */
     protected $fixture;
 
     protected function setUp()
     {
-        $this->fixture = new HeadFeedFactory;
+        $this->fixture = new HeadFeedLinkFactory;
     }
 
     public function testImplementingFactoryInterface()

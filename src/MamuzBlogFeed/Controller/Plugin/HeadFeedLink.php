@@ -2,11 +2,11 @@
 
 namespace MamuzBlogFeed\Controller\Plugin;
 
-use Zend\Feed\Writer\Feed;
+use Zend\Feed\Writer\Feed as FeedWriter;
 use Zend\Mvc\Controller\Plugin\AbstractPlugin;
 use Zend\View\Helper\HeadLink;
 
-class HeadFeed extends AbstractPlugin
+class HeadFeedLink extends AbstractPlugin
 {
     /** @var HeadLink */
     private $headLink;
@@ -20,10 +20,10 @@ class HeadFeed extends AbstractPlugin
     }
 
     /**
-     * @param Feed $feed
+     * @param FeedWriter $feed
      * @return void
      */
-    public function add(Feed $feed)
+    public function add(FeedWriter $feed)
     {
         $this->headLink->appendAlternate(
             $feed->getLink(),
