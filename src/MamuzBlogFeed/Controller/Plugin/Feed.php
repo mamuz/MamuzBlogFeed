@@ -67,6 +67,7 @@ class Feed extends AbstractPlugin
         }
 
         $feedOptions = $this->configProvider->getFor($tag);
+        // @todo inject route
 
         /** @var \IteratorAggregate $posts */
         return $this->feedFactory->create($feedOptions, $posts);
