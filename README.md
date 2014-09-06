@@ -12,11 +12,13 @@
 [![Total Downloads](https://poser.pugx.org/mamuz/mamuz-blog-feed/downloads.svg)](https://packagist.org/packages/mamuz/mamuz-blog-feed)
 [![License](https://poser.pugx.org/mamuz/mamuz-blog-feed/license.svg)](https://packagist.org/packages/mamuz/mamuz-blog-feed)
 
-
 ## Features
 
 - This module provides a plugin for [`mamuz/mamuz-blog`](https://packagist.org/packages/mamuz/mamuz-blog) to create Feeds
-- tba
+- Atom and RSS feeds are supported
+- Adds alternative link to html head automaticly
+- Feeds for all Posts and for Posts found by Tag are provided
+- Each feed is configurable seperatly
 
 ## Installation
 
@@ -44,10 +46,6 @@ After that run `composer update` and enable this module for ZF2 by adding
 
 ## Configuration
 
-tba
-
-### Default configuration
-
 This module is usable out of the box,
 but you can overwrite default configuration by adding a config file in `./config/autoload` directory.
 For default configuration see
@@ -55,7 +53,19 @@ For default configuration see
 
 ## Workflow
 
-tba
+If routing is successful, posts will be retrieved either with tag parameter or without tag parameter
+to create a feed xml and responding to http response object.
+
+## Events
+
+For the sake of simplicity `Event` is used for FQN [`MamuzBlog\EventManager\Event`](https://github.com/mamuz/MamuzBlog/blob/master/src/MamuzBlog/EventManager/Event.php).
+
+The following events are triggered by `Event::IDENTIFIER` *mamuz-blog*:
+
+Name              | Constant                  | Description
+----------------- | ------------------------- | -----------
+*createFeed.pre*  | `Event::PRE_FEED_CREATE`  | Before feed creation
+*createFeed.post* | `Event::POST_FEED_CREATE` | After feed creation
 
 ## Terminology
 

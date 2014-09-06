@@ -2,14 +2,19 @@
 
 namespace MamuzBlogFeed\Controller\Plugin;
 
+use MamuzBlog\EventManager\AwareTrait as EventManagerAwareTrait;
 use MamuzBlog\Feature\PostQueryInterface;
+use MamuzBlogFeed\EventManager\Event;
 use MamuzBlogFeed\Feed\Writer\FactoryInterface;
 use MamuzBlogFeed\Options\ConfigProviderInterface;
+use Zend\Feed\Writer\Feed as FeedWriter;
 use Zend\Mvc\Controller\AbstractController as MvcController;
 use Zend\Mvc\Controller\Plugin\AbstractPlugin;
 
 class Feed extends AbstractPlugin
 {
+    use EventManagerAwareTrait;
+
     /** @var PostQueryInterface */
     private $postService;
 
@@ -35,11 +40,27 @@ class Feed extends AbstractPlugin
     }
 
     /**
-     * @return \Zend\Feed\Writer\Feed
+     * @return FeedWriter
      */
     public function create()
     {
-        if ($tag = $this->getTagParam()) {
+        $tag = $this->getTagParam();
+
+        $results = $this->trigger(Event::PRE_FEED_CREATE, array('tag' => $tag));
+        if ($results->stopped() && ($feed = $results->last()) instanceof FeedWriter) {
+            return $feed;
+        }
+
+        $feed = $this->createFeedByTag($tag);
+
+        $this->trigger(Event::POST_FEED_CREATE, array('feed' => $feed));
+
+        return $feed;
+    }
+
+    private function createFeedByTag($tag = null)
+    {
+        if ($tag) {
             $posts = $this->postService->findPublishedPostsByTag($tag);
         } else {
             $posts = $this->postService->findPublishedPosts();
