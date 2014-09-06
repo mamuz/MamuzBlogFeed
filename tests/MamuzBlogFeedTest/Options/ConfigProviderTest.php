@@ -25,6 +25,7 @@ class ConfigProviderTest extends \PHPUnit_Framework_TestCase
     public function testGettingDefault()
     {
         $this->assertSame($this->config['default'], $this->fixture->getFor());
+        $this->assertSame($this->config['default'], $this->fixture->getFor('baz'));
         $this->assertSame($this->config['default'], $this->fixture->getFor(132));
         $this->assertSame($this->config['default'], $this->fixture->getFor(array()));
     }
@@ -33,6 +34,7 @@ class ConfigProviderTest extends \PHPUnit_Framework_TestCase
     {
         $this->fixture = new ConfigProvider($this->config, 'foo');
         $this->assertSame($this->config['foo'], $this->fixture->getFor());
+        $this->assertSame($this->config['foo'], $this->fixture->getFor('baz'));
         $this->assertSame($this->config['foo'], $this->fixture->getFor(132));
         $this->assertSame($this->config['foo'], $this->fixture->getFor(array()));
     }
@@ -44,6 +46,7 @@ class ConfigProviderTest extends \PHPUnit_Framework_TestCase
 
     public function testGettingEmpty()
     {
+        $this->fixture = new ConfigProvider($this->config, 'baz');
         $this->assertSame(array(), $this->fixture->getFor('bar'));
     }
 }

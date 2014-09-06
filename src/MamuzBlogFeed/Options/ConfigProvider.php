@@ -22,7 +22,7 @@ class ConfigProvider implements ConfigProviderInterface
 
     public function getFor($index = null)
     {
-        if (!is_string($index)) {
+        if (!is_string($index) || !isset($this->config[$index])) {
             $index = $this->defaultIndex;
         }
 
