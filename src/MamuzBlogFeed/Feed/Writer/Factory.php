@@ -44,13 +44,15 @@ class Factory implements FactoryInterface
         }
     }
 
-    public function create(array $feedOptions, \IteratorAggregate $entries)
+    public function create(array $feedOptions, \IteratorAggregate $entries = null)
     {
-        $this->entries = $entries;
-
         $this->createFeed($feedOptions);
-        $this->createEntryPrototype();
-        $this->createEntries();
+
+        if ($entries) {
+            $this->entries = $entries;
+            $this->createEntryPrototype();
+            $this->createEntries();
+        }
 
         return $this->feed;
     }

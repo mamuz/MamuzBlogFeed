@@ -24,7 +24,7 @@ class FeedControllerFactoryTest extends \PHPUnit_Framework_TestCase
         $listener = \Mockery::mock('Zend\EventManager\ListenerAggregateInterface');
         $sm = \Mockery::mock('Zend\ServiceManager\ServiceLocatorInterface');
         $sm->shouldReceive('get')->with('MamuzBlog\DomainManager')->andReturn($sm);
-        $sm->shouldReceive('get')->with('MamuzBlogFeed\Listener\Aggregate')->andReturn($listener);
+        $sm->shouldReceive('get')->with('MamuzBlogFeed\Listener\QueryFilterAggregate')->andReturn($listener);
 
         $controller = $this->fixture->createService($sm);
 
@@ -40,7 +40,7 @@ class FeedControllerFactoryTest extends \PHPUnit_Framework_TestCase
 
         $listener = \Mockery::mock('Zend\EventManager\ListenerAggregateInterface');
         $sm->shouldReceive('get')->with('MamuzBlog\DomainManager')->andReturn($sm);
-        $sm->shouldReceive('get')->with('MamuzBlogFeed\Listener\Aggregate')->andReturn($listener);
+        $sm->shouldReceive('get')->with('MamuzBlogFeed\Listener\QueryFilterAggregate')->andReturn($listener);
 
         $controller = $this->fixture->createService($sl);
 

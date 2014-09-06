@@ -3,11 +3,11 @@
 namespace MamuzBlogFeedTest\Listener;
 
 use MamuzBlog\EventManager\Event;
-use MamuzBlogFeed\Listener\Aggregate;
+use MamuzBlogFeed\Listener\QueryFilterAggregate;
 
-class AggregateTest extends \PHPUnit_Framework_TestCase
+class QueryFilterAggregateTest extends \PHPUnit_Framework_TestCase
 {
-    /** @var Aggregate */
+    /** @var QueryFilterAggregate */
     protected $fixture;
 
     /** @var \Zend\Filter\FilterInterface | \Mockery\MockInterface */
@@ -16,7 +16,7 @@ class AggregateTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $this->filter = \Mockery::mock('Zend\Filter\FilterInterface');
-        $this->fixture = new Aggregate($this->filter);
+        $this->fixture = new QueryFilterAggregate($this->filter);
     }
 
     public function testExtendingAbstractListenerAggregate()

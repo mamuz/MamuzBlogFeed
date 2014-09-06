@@ -8,7 +8,7 @@ use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorAwareInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
-class AggregateFactory implements FactoryInterface
+class QueryFilterAggregateFactory implements FactoryInterface
 {
     /**
      * {@inheritdoc}
@@ -25,6 +25,6 @@ class AggregateFactory implements FactoryInterface
 
         $queryFilter = new Query($configProvider);
 
-        return new Aggregate($queryFilter);
+        return new QueryFilterAggregate($queryFilter);
     }
 }

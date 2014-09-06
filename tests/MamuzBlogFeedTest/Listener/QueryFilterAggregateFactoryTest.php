@@ -2,16 +2,16 @@
 
 namespace MamuzBlogFeedTest\Listener;
 
-use MamuzBlogFeed\Listener\AggregateFactory;
+use MamuzBlogFeed\Listener\QueryFilterAggregateFactory;
 
-class AggregateFactoryTest extends \PHPUnit_Framework_TestCase
+class QueryFilterAggregateFactoryTest extends \PHPUnit_Framework_TestCase
 {
-    /** @var AggregateFactory */
+    /** @var QueryFilterAggregateFactory */
     protected $fixture;
 
     protected function setUp()
     {
-        $this->fixture = new AggregateFactory;
+        $this->fixture = new QueryFilterAggregateFactory;
     }
 
     public function testImplementingFactoryInterface()

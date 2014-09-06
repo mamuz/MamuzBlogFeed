@@ -6,12 +6,22 @@ use MamuzBlogFeed\Extractor\FeedEntry;
 use MamuzBlogFeed\Feed\Writer\Factory;
 use MamuzBlogFeed\Hydrator\Mutator;
 use MamuzBlogFeed\Options\ConfigProvider;
+use Zend\ServiceManager\FactoryInterface;
+use Zend\ServiceManager\ServiceLocatorAwareInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
-class FeedFactory extends AbstractFactory
+class FeedFactory implements FactoryInterface
 {
-    public function create(ServiceLocatorInterface $serviceLocator)
+    /**
+     * {@inheritdoc}
+     * @return \Zend\Mvc\Controller\Plugin\AbstractPlugin
+     */
+    public function createService(ServiceLocatorInterface $serviceLocator)
     {
+        if ($serviceLocator instanceof ServiceLocatorAwareInterface) {
+            $serviceLocator = $serviceLocator->getServiceLocator();
+        }
+
         /** @var ServiceLocatorInterface $domainManager */
         $domainManager = $serviceLocator->get('MamuzBlog\DomainManager');
         /** @var \MamuzBlog\Feature\PostQueryInterface $postService */

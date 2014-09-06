@@ -26,12 +26,11 @@ return array(
     'controller_plugins' => array(
         'factories' => array(
             'feed' => 'MamuzBlogFeed\Controller\Plugin\FeedFactory',
-            'headFeedLink' => 'MamuzBlogFeed\Controller\Plugin\HeadFeedLinkFactory',
         )
     ),
     'blog_domain'        => array(
         'factories' => array(
-            'MamuzBlogFeed\Listener\Aggregate' => 'MamuzBlogFeed\Listener\AggregateFactory',
+            'MamuzBlogFeed\Listener\QueryFilterAggregate' => 'MamuzBlogFeed\Listener\QueryFilterAggregateFactory',
         ),
     ),
     'view_manager'       => array(

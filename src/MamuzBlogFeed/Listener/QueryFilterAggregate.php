@@ -8,7 +8,7 @@ use Zend\EventManager\EventInterface;
 use Zend\EventManager\EventManagerInterface;
 use Zend\Filter\FilterInterface;
 
-class Aggregate extends AbstractListenerAggregate
+class QueryFilterAggregate extends AbstractListenerAggregate
 {
     /** @var FilterInterface */
     private $queryFilter;

@@ -21,7 +21,7 @@ class FeedControllerFactory implements FactoryInterface
         /** @var ServiceLocatorInterface $domainManager */
         $domainManager = $serviceLocator->get('MamuzBlog\DomainManager');
         /* @var \Zend\EventManager\ListenerAggregateInterface $listenerAggregate */
-        $listenerAggregate = $domainManager->get('MamuzBlogFeed\Listener\Aggregate');
+        $listenerAggregate = $domainManager->get('MamuzBlogFeed\Listener\QueryFilterAggregate');
 
         return new FeedController($listenerAggregate);
     }

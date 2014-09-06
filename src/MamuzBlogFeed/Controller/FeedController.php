@@ -8,7 +8,6 @@ use Zend\Mvc\MvcEvent;
 use Zend\View\Model;
 
 /**
- * @method \MamuzBlogFeed\Controller\Plugin\HeadFeedLink headFeedLink())
  * @method \MamuzBlogFeed\Controller\Plugin\Feed feed())
  */
 class FeedController extends AbstractActionController
@@ -36,7 +35,6 @@ class FeedController extends AbstractActionController
     public function postsAction()
     {
         $feed = $this->feed()->create();
-        $this->headFeedLink()->add($feed);
 
         $feedmodel = new Model\FeedModel;
         $feedmodel->setFeed($feed);
