@@ -22,15 +22,14 @@ class FeedFactoryTest extends \PHPUnit_Framework_TestCase
     public function testCreation()
     {
         $queryInterface = \Mockery::mock('MamuzBlog\Feature\PostQueryInterface');
-        $renderer = \Mockery::mock('Zend\View\Renderer\RendererInterface');
-        $viewHelperManager = \Mockery::mock('Zend\View\HelperPluginManager');
-        $viewHelperManager->shouldReceive('getRenderer')->andReturn($renderer);
+        $configProvider = \Mockery::mock('MamuzBlogFeed\Options\ConfigProviderInterface');
+        $feedFactory = \Mockery::mock('MamuzBlogFeed\Feed\Writer\FactoryInterface');
 
         $sm = \Mockery::mock('Zend\ServiceManager\ServiceLocatorInterface');
-        $sm->shouldReceive('get')->with('ViewHelperManager')->andReturn($viewHelperManager);
+        $sm->shouldReceive('get')->with('MamuzBlogFeed\Feed\WriterFactory')->andReturn($feedFactory);
+        $sm->shouldReceive('get')->with('MamuzBlogFeed\Options\ConfigProvider')->andReturn($configProvider);
         $sm->shouldReceive('get')->with('MamuzBlog\DomainManager')->andReturn($sm);
         $sm->shouldReceive('get')->with('MamuzBlog\Service\PostQuery')->andReturn($queryInterface);
-        $sm->shouldReceive('get')->with('Config')->andReturn(array('MamuzBlogFeed' => array()));
 
         $plugin = $this->fixture->createService($sm);
 
@@ -45,14 +44,13 @@ class FeedFactoryTest extends \PHPUnit_Framework_TestCase
         $sl->shouldReceive('getServiceLocator')->andReturn($sm);
 
         $queryInterface = \Mockery::mock('MamuzBlog\Feature\PostQueryInterface');
-        $renderer = \Mockery::mock('Zend\View\Renderer\RendererInterface');
-        $viewHelperManager = \Mockery::mock('Zend\View\HelperPluginManager');
-        $viewHelperManager->shouldReceive('getRenderer')->andReturn($renderer);
+        $configProvider = \Mockery::mock('MamuzBlogFeed\Options\ConfigProviderInterface');
+        $feedFactory = \Mockery::mock('MamuzBlogFeed\Feed\Writer\FactoryInterface');
 
-        $sm->shouldReceive('get')->with('ViewHelperManager')->andReturn($viewHelperManager);
+        $sm->shouldReceive('get')->with('MamuzBlogFeed\Feed\WriterFactory')->andReturn($feedFactory);
+        $sm->shouldReceive('get')->with('MamuzBlogFeed\Options\ConfigProvider')->andReturn($configProvider);
         $sm->shouldReceive('get')->with('MamuzBlog\DomainManager')->andReturn($sm);
         $sm->shouldReceive('get')->with('MamuzBlog\Service\PostQuery')->andReturn($queryInterface);
-        $sm->shouldReceive('get')->with('Config')->andReturn(array('MamuzBlogFeed' => array()));
 
         $plugin = $this->fixture->createService($sl);
 

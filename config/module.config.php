@@ -31,6 +31,8 @@ return array(
     'blog_domain'        => array(
         'factories' => array(
             'MamuzBlogFeed\Listener\QueryFilterAggregate' => 'MamuzBlogFeed\Listener\QueryFilterAggregateFactory',
+            'MamuzBlogFeed\Feed\Writer\Factory'           => 'MamuzBlogFeed\Writer\WriterFactory',
+            'MamuzBlogFeed\Options\ConfigProvider'        => 'MamuzBlogFeed\Options\ConfigProviderFactory',
         ),
     ),
     'view_manager'       => array(
