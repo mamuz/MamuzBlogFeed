@@ -4,7 +4,6 @@ namespace MamuzBlogFeed\Controller\Plugin;
 
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorAwareInterface;
-use Zend\ServiceManager\ServiceLocatorAwareTrait;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
 class HeadFeedFactory implements FactoryInterface
