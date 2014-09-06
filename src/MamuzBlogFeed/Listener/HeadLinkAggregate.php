@@ -37,7 +37,6 @@ class HeadLinkAggregate extends AbstractAggregate
     {
         $tag = $event->getParam('query')->getParameter('tag');
         $feedOptions = $this->configProvider->getFor($tag);
-
         $feed = $this->feedFactory->create($feedOptions);
 
         $this->headLink->appendAlternate(
