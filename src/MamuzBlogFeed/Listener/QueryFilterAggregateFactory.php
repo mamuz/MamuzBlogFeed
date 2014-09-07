@@ -20,8 +20,10 @@ class QueryFilterAggregateFactory implements FactoryInterface
             $serviceLocator = $serviceLocator->getServiceLocator();
         }
 
-        $config = $serviceLocator->get('Config')['MamuzBlogFeed'];
-        $configProvider = new ConfigProvider($config);
+        /** @var ServiceLocatorInterface $domainManager */
+        $domainManager = $serviceLocator->get('MamuzBlog\DomainManager');
+        /** @var \MamuzBlogFeed\Options\ConfigProviderInterface $configProvider */
+        $configProvider = $domainManager->get('MamuzBlogFeed\Options\ConfigProvider');
 
         $queryFilter = new Query($configProvider);
 

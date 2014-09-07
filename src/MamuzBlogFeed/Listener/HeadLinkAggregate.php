@@ -37,12 +37,16 @@ class HeadLinkAggregate extends AbstractAggregate
     {
         $tag = $event->getParam('query')->getParameter('tag');
         $feedOptions = $this->configProvider->getFor($tag);
-        $feed = $this->feedFactory->create($feedOptions);
 
-        $this->headLink->appendAlternate(
-            $feed->getLink(),
-            "application/" . $feed->getType() . "+xml",
-            $feed->getTitle()
-        );
+        if (isset($feedOptions['autoHeadLink']) && $feedOptions['autoHeadLink']) {
+            $feed = $this->feedFactory->create($feedOptions);
+            foreach ($feed->getFeedLinks() as $type => $link) {
+                $this->headLink->appendAlternate(
+                    $link,
+                    "application/" . $type . "+xml",
+                    $feed->getTitle()
+                );
+            }
+        }
     }
 }

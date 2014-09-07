@@ -53,5 +53,4 @@ class Query implements FilterInterface
 
         return $maxResults;
     }
-
 }

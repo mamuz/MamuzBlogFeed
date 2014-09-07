@@ -9,7 +9,7 @@ use Zend\View\Renderer\RendererInterface;
 class FeedEntry implements ExtractionInterface
 {
     /** @var RendererInterface */
-    private $renderer = array();
+    private $renderer;
 
     /**
      * @param RendererInterface $renderer

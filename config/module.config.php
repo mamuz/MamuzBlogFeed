@@ -41,6 +41,7 @@ return array(
     ),
     'MamuzBlogFeed'      => array(
         'default' => array(
+            'autoHeadLink'  => true,
             'maxResults'    => 100,
             'id'            => 'http://local.marco-muths.de/blog-feed',
             'type'          => 'rss',

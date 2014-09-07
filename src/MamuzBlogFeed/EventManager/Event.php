@@ -2,7 +2,9 @@
 
 namespace MamuzBlogFeed\EventManager;
 
-interface Event
+use MamuzBlog\EventManager\Event as MamuzBlogEvent;
+
+interface Event extends MamuzBlogEvent
 {
     const PRE_FEED_CREATE = 'createFeed.pre';
 

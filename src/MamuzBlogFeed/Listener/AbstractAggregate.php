@@ -2,7 +2,7 @@
 
 namespace MamuzBlogFeed\Listener;
 
-use MamuzBlog\EventManager\Event;
+use MamuzBlogFeed\EventManager\Event;
 use Zend\EventManager\AbstractListenerAggregate;
 use Zend\EventManager\EventInterface;
 use Zend\EventManager\EventManagerInterface;

@@ -12,9 +12,6 @@ class Factory implements FactoryInterface
     /** @var Feed */
     private $feed;
 
-    /** @var \IteratorAggregate */
-    private $entries;
-
     /** @var Entry */
     private $entryPrototype;
 
@@ -23,6 +20,9 @@ class Factory implements FactoryInterface
 
     /** @var HydrationInterface */
     private $hydrator;
+
+    /** @var \DateTime|null */
+    private $lastModifiedDate;
 
     /**
      * @param ExtractionInterface $postExtractor
@@ -49,9 +49,8 @@ class Factory implements FactoryInterface
         $this->createFeed($feedOptions);
 
         if ($entries) {
-            $this->entries = $entries;
-            $this->createEntryPrototype();
-            $this->createEntries();
+            $this->createEntries($entries);
+            $this->assignDateModifiedToFeed();
         }
 
         return $this->feed;
@@ -64,40 +63,49 @@ class Factory implements FactoryInterface
     private function createFeed(array $feedOptions)
     {
         $this->feed->setType('rss');
-        $this->feed->setDateModified(time());
+        $this->feed->setLastBuildDate(time());
+
         $this->hydrator->hydrate(
             $feedOptions,
             $this->feed
         );
-    }
 
-    /**
-     * @return void
-     */
-    private function createEntryPrototype()
-    {
-        $this->entryPrototype = $this->feed->createEntry();
-        if ($copyright = $this->feed->getCopyright()) {
-            $this->entryPrototype->setCopyright($copyright);
-        }
-        if ($authors = $this->feed->getAuthors()) {
-            $this->entryPrototype->addAuthors($authors);
+        if (isset($feedOptions['feedUrl'])) {
+            $this->feed->setFeedLink($feedOptions['feedUrl'], $this->feed->getType());
         }
     }
 
     /**
+     * @param \IteratorAggregate $entries
      * @return void
      */
-    private function createEntries()
+    private function createEntries(\IteratorAggregate $entries)
     {
-        foreach ($this->entries as $post) {
+        foreach ($entries as $post) {
             $entry = $this->hydrator->hydrate(
                 $this->postExtractor->extract($post),
                 $this->getEntryPrototype()
             );
             /** @var Entry $entry */
             $this->feed->addEntry($entry);
+            $this->calculateLastModifiedBy($entry->getDateModified());
         }
+    }
+
+    /**
+     * @return Entry
+     */
+    private function createEntryPrototype()
+    {
+        $entryPrototype = $this->feed->createEntry();
+        if ($copyright = $this->feed->getCopyright()) {
+            $entryPrototype->setCopyright($copyright);
+        }
+        if ($authors = $this->feed->getAuthors()) {
+            $entryPrototype->addAuthors($authors);
+        }
+
+        return $entryPrototype;
     }
 
     /**
@@ -105,6 +113,38 @@ class Factory implements FactoryInterface
      */
     private function getEntryPrototype()
     {
+        if (!$this->entryPrototype instanceof Entry) {
+            $this->entryPrototype = $this->createEntryPrototype();
+        }
+
         return clone $this->entryPrototype;
+    }
+
+    /**
+     * @param string|\DateTime $dateTime
+     * @return void
+     */
+    private function calculateLastModifiedBy($dateTime)
+    {
+        if (!$dateTime instanceof \DateTime) {
+            $dateTime = new \DateTime($dateTime);
+        }
+
+        if (!$this->lastModifiedDate instanceof \DateTime
+            || $dateTime > $this->lastModifiedDate
+        ) {
+            $this->lastModifiedDate = $dateTime;
+        }
+    }
+
+    /**
+     * @return void
+     */
+    private function assignDateModifiedToFeed()
+    {
+        if (!$this->feed->getDateModified()) {
+            $this->feed->setDateModified($this->lastModifiedDate);
+        }
+        $this->lastModifiedDate = null;
     }
 }

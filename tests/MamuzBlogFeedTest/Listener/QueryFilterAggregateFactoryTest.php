@@ -21,10 +21,11 @@ class QueryFilterAggregateFactoryTest extends \PHPUnit_Framework_TestCase
 
     public function testCreation()
     {
-        $config = array('MamuzBlogFeed' => array());
+        $configProvider = \Mockery::mock('MamuzBlogFeed\Options\ConfigProviderInterface');
 
         $sm = \Mockery::mock('Zend\ServiceManager\ServiceLocatorInterface');
-        $sm->shouldReceive('get')->with('Config')->andReturn($config);
+        $sm->shouldReceive('get')->with('MamuzBlog\DomainManager')->andReturn($sm);
+        $sm->shouldReceive('get')->with('MamuzBlogFeed\Options\ConfigProvider')->andReturn($configProvider);
 
         $aggregate = $this->fixture->createService($sm);
 
@@ -38,9 +39,10 @@ class QueryFilterAggregateFactoryTest extends \PHPUnit_Framework_TestCase
         $sl = \Mockery::mock('Zend\ServiceManager\AbstractPluginManager');
         $sl->shouldReceive('getServiceLocator')->andReturn($sm);
 
-        $config = array('MamuzBlogFeed' => array());
+        $configProvider = \Mockery::mock('MamuzBlogFeed\Options\ConfigProviderInterface');
 
-        $sm->shouldReceive('get')->with('Config')->andReturn($config);
+        $sm->shouldReceive('get')->with('MamuzBlog\DomainManager')->andReturn($sm);
+        $sm->shouldReceive('get')->with('MamuzBlogFeed\Options\ConfigProvider')->andReturn($configProvider);
 
         $aggregate = $this->fixture->createService($sl);
 

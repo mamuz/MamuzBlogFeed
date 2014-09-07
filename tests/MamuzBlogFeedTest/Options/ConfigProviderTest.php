@@ -9,12 +9,22 @@ class ConfigProviderTest extends \PHPUnit_Framework_TestCase
     /** @var ConfigProvider */
     protected $fixture;
 
+    /** @var \MamuzBlogFeed\Filter\FeedOptions | \Mockery\MockInterface */
+    protected $filter;
+
     /** @var array */
     protected $config = array('foo' => array(12, 13), 'default' => array(1, 3));
 
     protected function setUp()
     {
-        $this->fixture = new ConfigProvider($this->config);
+        $this->filter = \Mockery::mock('MamuzBlogFeed\Filter\FeedOptions');
+        $this->filter->shouldReceive('filter')->andReturnUsing(
+            function ($value) {
+                return $value;
+            }
+        );
+
+        $this->fixture = new ConfigProvider($this->config, $this->filter);
     }
 
     public function testImplementingConfigProviderInterface()
@@ -22,31 +32,34 @@ class ConfigProviderTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('MamuzBlogFeed\Options\ConfigProviderInterface', $this->fixture);
     }
 
+    public function testGettingDefaultByNull()
+    {
+        $this->filter->shouldReceive('setTagParam')->with(null)->andReturnSelf();
+        $this->assertSame($this->config['default'], $this->fixture->getFor());
+    }
+
     public function testGettingDefault()
     {
-        $this->assertSame($this->config['default'], $this->fixture->getFor());
+        $this->filter->shouldReceive('setTagParam')->with('baz')->andReturnSelf();
         $this->assertSame($this->config['default'], $this->fixture->getFor('baz'));
-        $this->assertSame($this->config['default'], $this->fixture->getFor(132));
-        $this->assertSame($this->config['default'], $this->fixture->getFor(array()));
     }
 
     public function testGettingUserDefault()
     {
-        $this->fixture = new ConfigProvider($this->config, 'foo');
-        $this->assertSame($this->config['foo'], $this->fixture->getFor());
+        $this->fixture = new ConfigProvider($this->config, $this->filter, 'foo');
+        $this->filter->shouldReceive('setTagParam')->with('baz')->andReturnSelf();
         $this->assertSame($this->config['foo'], $this->fixture->getFor('baz'));
-        $this->assertSame($this->config['foo'], $this->fixture->getFor(132));
-        $this->assertSame($this->config['foo'], $this->fixture->getFor(array()));
     }
 
     public function testGetting()
     {
+        $this->filter->shouldReceive('setTagParam')->with('foo')->andReturnSelf();
         $this->assertSame($this->config['foo'], $this->fixture->getFor('foo'));
     }
 
     public function testGettingEmpty()
     {
-        $this->fixture = new ConfigProvider($this->config, 'baz');
+        $this->fixture = new ConfigProvider($this->config, $this->filter, 'baz');
         $this->assertSame(array(), $this->fixture->getFor('bar'));
     }
 }

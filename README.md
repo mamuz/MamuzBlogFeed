@@ -58,7 +58,7 @@ to create a feed xml and responding to http response object.
 
 ## Events
 
-For the sake of simplicity `Event` is used for FQN [`MamuzBlog\EventManager\Event`](https://github.com/mamuz/MamuzBlog/blob/master/src/MamuzBlog/EventManager/Event.php).
+For the sake of simplicity `Event` is used for FQN [`MamuzBlogFeed\EventManager\Event`](https://github.com/mamuz/MamuzBlogFeed/blob/master/src/MamuzBlogFeed/EventManager/Event.php).
 
 The following events are triggered by `Event::IDENTIFIER` *mamuz-blog*:
 

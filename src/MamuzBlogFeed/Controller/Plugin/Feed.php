@@ -58,6 +58,19 @@ class Feed extends AbstractPlugin
         return $feed;
     }
 
+    /**
+     * @return string|null
+     */
+    private function getTagParam()
+    {
+        $controller = $this->getController();
+        if ($controller instanceof MvcController) {
+            return $controller->params()->fromRoute('tag');
+        }
+
+        return null;
+    }
+
     private function createFeedByTag($tag = null)
     {
         if ($tag) {
@@ -67,34 +80,8 @@ class Feed extends AbstractPlugin
         }
 
         $feedOptions = $this->configProvider->getFor($tag);
-        // @todo inject route
 
         /** @var \IteratorAggregate $posts */
         return $this->feedFactory->create($feedOptions, $posts);
-    }
-
-    /**
-     * @return string|null
-     */
-    private function getTagParam()
-    {
-        if ($mvcController = $this->getMvcController()) {
-            return $mvcController->params()->fromRoute('tag');
-        }
-
-        return null;
-    }
-
-    /**
-     * @return MvcController|null
-     */
-    private function getMvcController()
-    {
-        $controller = $this->getController();
-        if ($controller instanceof MvcController) {
-            return $controller;
-        }
-
-        return null;
     }
 }
