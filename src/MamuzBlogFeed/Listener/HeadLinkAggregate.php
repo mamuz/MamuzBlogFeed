@@ -38,6 +38,11 @@ class HeadLinkAggregate extends AbstractAggregate
     {
         /** @var \Doctrine\ORM\Query $query */
         $query = $event->getParam('query');
+
+        if (!$query->contains('MamuzBlog\Entity\Post')) {
+            return;
+        }
+
         $tag = $query->getParameter('tag');
         if ($tag instanceof Parameter) {
             $tag = $tag->getValue();
