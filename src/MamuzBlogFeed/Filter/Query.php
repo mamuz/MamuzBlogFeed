@@ -3,6 +3,7 @@
 namespace MamuzBlogFeed\Filter;
 
 use Doctrine\ORM\Query as QueryBuilder;
+use Doctrine\ORM\Query\Parameter;
 use MamuzBlogFeed\Options\ConfigProviderInterface;
 use Zend\Filter\FilterInterface;
 
@@ -30,7 +31,12 @@ class Query implements FilterInterface
             return $value;
         }
 
-        $maxResults = $this->getMaxResultsFor($value->getParameter('tag'));
+        $tag = $value->getParameter('tag');
+        if ($tag instanceof Parameter) {
+            $tag = $tag->getValue();
+        }
+
+        $maxResults = $this->getMaxResultsFor($tag);
 
         $value->setFirstResult(0)->setMaxResults($maxResults);
 
@@ -38,7 +44,7 @@ class Query implements FilterInterface
     }
 
     /**
-     * @param mixed $tag
+     * @param null|string $tag
      * @return int
      */
     private function getMaxResultsFor($tag)
