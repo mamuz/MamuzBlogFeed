@@ -3,7 +3,6 @@
 namespace MamuzBlogFeed\Listener;
 
 use MamuzBlogFeed\Filter\Query;
-use MamuzBlogFeed\Options\ConfigProvider;
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorAwareInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
