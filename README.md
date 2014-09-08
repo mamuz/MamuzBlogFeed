@@ -53,8 +53,10 @@ For default configuration see
 
 ## Workflow
 
-If routing is successful, posts will be retrieved either with tag parameter or without tag parameter
+- If routing is successful, posts will be retrieved either with tag parameter or without tag parameter
 to create a feed xml and responding to http response object.
+- If event `Event::PRE_PAGINATION_CREATE` is triggert by posts retrieval and `autoHeadLink` is set to true for specific feed,
+an alternative link to html head is appended automaticly.
 
 ## Events
 
