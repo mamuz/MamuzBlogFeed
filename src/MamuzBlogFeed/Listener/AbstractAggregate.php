@@ -2,6 +2,8 @@
 
 namespace MamuzBlogFeed\Listener;
 
+use Doctrine\ORM\Query;
+use Doctrine\ORM\Query\Parameter;
 use MamuzBlogFeed\EventManager\Event;
 use Zend\EventManager\AbstractListenerAggregate;
 use Zend\EventManager\EventInterface;
@@ -24,11 +26,31 @@ abstract class AbstractAggregate extends AbstractListenerAggregate
 
     /**
      * @param EventInterface $event
-     * @return \Doctrine\ORM\Query
+     * @return Query|null
      */
-    protected function getQueryBy(EventInterface $event)
+    protected function getPostQueryFrom(EventInterface $event)
     {
-        return $event->getParam('query');
+        $query = $event->getParam('query');
+
+        if ($query->contains('MamuzBlog\Entity\Post')) {
+            return $query;
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * @param Query $query
+     * @return null|string
+     */
+    protected function getTagParamFrom(Query $query)
+    {
+        $tag = $query->getParameter('tag');
+        if ($tag instanceof Parameter) {
+            $tag = $tag->getValue();
+        }
+
+        return $tag;
     }
 
     /**

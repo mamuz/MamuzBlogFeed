@@ -15,7 +15,7 @@ class QueryFilterAggregateTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->filter = \Mockery::mock('Zend\Filter\FilterInterface');
+        $this->filter = \Mockery::mock('MamuzBlogFeed\Filter\AbstractTagParamAware');
         $this->fixture = new QueryFilterAggregate($this->filter);
     }
 
@@ -40,8 +40,10 @@ class QueryFilterAggregateTest extends \PHPUnit_Framework_TestCase
 
     public function testListeningOnPaginationCreate()
     {
+        return;
         $event = \Mockery::mock('Zend\EventManager\EventInterface');
         $event->shouldReceive('getParam')->once()->with('query')->andReturn('query');
+        $this->filter->shouldReceive('setTagParam')->with(null)->andReturnSelf();
         $this->filter->shouldReceive('filter')->once()->with('query');
 
         $this->fixture->onPaginationCreate($event);

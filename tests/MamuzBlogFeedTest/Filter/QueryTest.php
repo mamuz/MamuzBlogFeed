@@ -22,14 +22,24 @@ class QueryTest extends \PHPUnit_Framework_TestCase
     {
         $this->query = \Mockery::mock('Doctrine\ORM\AbstractQuery');
         $this->query->shouldReceive('setFirstResult')->with(0)->andReturnSelf();
-        $this->query->shouldReceive('getParameter')->with('tag')->andReturn($this->tag);
         $this->configProvider = \Mockery::mock('MamuzBlogFeed\Options\ConfigProviderInterface');
         $this->fixture = new Query($this->configProvider);
+        $this->fixture->setTagParam($this->tag);
     }
 
     public function testImplementingFilterInterface()
     {
         $this->assertInstanceOf('Zend\Filter\FilterInterface', $this->fixture);
+    }
+
+    public function testMutateAndAccessTagParam()
+    {
+        $this->assertSame($this->tag, $this->fixture->getTagParam());
+        $this->fixture->setTagParam('foo');
+        $this->assertSame('foo', $this->fixture->getTagParam());
+        $return = $this->fixture->setTagParam(null);
+        $this->assertNull($this->fixture->getTagParam());
+        $this->assertSame($this->fixture, $return);
     }
 
     public function testFilteringWrongValueType()

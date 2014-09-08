@@ -3,11 +3,9 @@
 namespace MamuzBlogFeed\Filter;
 
 use Doctrine\ORM\Query as QueryBuilder;
-use Doctrine\ORM\Query\Parameter;
 use MamuzBlogFeed\Options\ConfigProviderInterface;
-use Zend\Filter\FilterInterface;
 
-class Query implements FilterInterface
+class Query extends AbstractTagParamAware
 {
     /** @var ConfigProviderInterface */
     private $configProvider;
@@ -31,25 +29,17 @@ class Query implements FilterInterface
             return $value;
         }
 
-        $tag = $value->getParameter('tag');
-        if ($tag instanceof Parameter) {
-            $tag = $tag->getValue();
-        }
-
-        $maxResults = $this->getMaxResultsFor($tag);
-
-        $value->setFirstResult(0)->setMaxResults($maxResults);
+        $value->setFirstResult(0)->setMaxResults($this->getMaxResultsFromConfig());
 
         return $value;
     }
 
     /**
-     * @param null|string $tag
      * @return int
      */
-    private function getMaxResultsFor($tag)
+    private function getMaxResultsFromConfig()
     {
-        $config = $this->configProvider->getFor($tag);
+        $config = $this->configProvider->getFor($this->getTagParam());
 
         if (isset($config['maxResults'])) {
             $maxResults = (int) $config['maxResults'];

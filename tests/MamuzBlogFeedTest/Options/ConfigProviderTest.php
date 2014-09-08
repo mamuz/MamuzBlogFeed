@@ -9,7 +9,7 @@ class ConfigProviderTest extends \PHPUnit_Framework_TestCase
     /** @var ConfigProvider */
     protected $fixture;
 
-    /** @var \MamuzBlogFeed\Filter\FeedOptions | \Mockery\MockInterface */
+    /** @var \MamuzBlogFeed\Filter\AbstractTagParamAware | \Mockery\MockInterface */
     protected $filter;
 
     /** @var array */
@@ -17,7 +17,7 @@ class ConfigProviderTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->filter = \Mockery::mock('MamuzBlogFeed\Filter\FeedOptions');
+        $this->filter = \Mockery::mock('MamuzBlogFeed\Filter\AbstractTagParamAware');
         $this->filter->shouldReceive('filter')->andReturnUsing(
             function ($value) {
                 return $value;

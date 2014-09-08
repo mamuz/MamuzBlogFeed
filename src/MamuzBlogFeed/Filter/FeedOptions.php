@@ -2,16 +2,13 @@
 
 namespace MamuzBlogFeed\Filter;
 
-use Zend\Filter\FilterInterface;
 use Zend\View\Renderer\RendererInterface;
 
-class FeedOptions implements FilterInterface
+class FeedOptions extends AbstractTagParamAware
 {
+
     /** @var RendererInterface */
     private $renderer;
-
-    /** @var string|null */
-    private $tagParam = null;
 
     /**
      * @param RendererInterface $renderer
@@ -19,24 +16,6 @@ class FeedOptions implements FilterInterface
     public function __construct(RendererInterface $renderer)
     {
         $this->renderer = $renderer;
-    }
-
-    /**
-     * @param null|string $tagParam
-     * @return FeedOptions
-     */
-    public function setTagParam($tagParam)
-    {
-        $this->tagParam = is_null($tagParam) ? null : (string) $tagParam;
-        return $this;
-    }
-
-    /**
-     * @return null|string
-     */
-    public function getTagParam()
-    {
-        return $this->tagParam;
     }
 
     public function filter($value)

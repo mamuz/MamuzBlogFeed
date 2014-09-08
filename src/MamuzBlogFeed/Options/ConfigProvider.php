@@ -2,7 +2,7 @@
 
 namespace MamuzBlogFeed\Options;
 
-use MamuzBlogFeed\Filter\FeedOptions as FilterInterface;
+use MamuzBlogFeed\Filter\AbstractTagParamAware as FilterInterface;
 
 class ConfigProvider implements ConfigProviderInterface
 {

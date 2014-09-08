@@ -2,8 +2,8 @@
 
 namespace MamuzBlogFeed\Listener;
 
+use MamuzBlogFeed\Filter\AbstractTagParamAware as FilterInterface;
 use Zend\EventManager\EventInterface;
-use Zend\Filter\FilterInterface;
 
 class QueryFilterAggregate extends AbstractAggregate
 {
@@ -20,6 +20,11 @@ class QueryFilterAggregate extends AbstractAggregate
 
     public function onPaginationCreate(EventInterface $event)
     {
-        $this->queryFilter->filter($event->getParam('query'));
+        if (($query = $this->getPostQueryFrom($event)) === null) {
+            return;
+        }
+
+        $tagParam = $this->getTagParamFrom($query);
+        $this->queryFilter->setTagParam($tagParam)->filter($this->getPostQueryFrom($event));
     }
 }

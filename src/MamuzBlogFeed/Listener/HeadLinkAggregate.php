@@ -2,7 +2,6 @@
 
 namespace MamuzBlogFeed\Listener;
 
-use Doctrine\ORM\Query\Parameter;
 use MamuzBlogFeed\Feed\Writer\FactoryInterface;
 use MamuzBlogFeed\Options\ConfigProviderInterface;
 use Zend\EventManager\EventInterface;
@@ -36,18 +35,11 @@ class HeadLinkAggregate extends AbstractAggregate
 
     public function onPaginationCreate(EventInterface $event)
     {
-        /** @var \Doctrine\ORM\Query $query */
-        $query = $event->getParam('query');
-
-        if (!$query->contains('MamuzBlog\Entity\Post')) {
+        if (($query = $this->getPostQueryFrom($event)) === null) {
             return;
         }
 
-        $tag = $query->getParameter('tag');
-        if ($tag instanceof Parameter) {
-            $tag = $tag->getValue();
-        }
-        $feedOptions = $this->configProvider->getFor($tag);
+        $feedOptions = $this->configProvider->getFor($this->getTagParamFrom($query));
 
         if (isset($feedOptions['autoHeadLink']) && $feedOptions['autoHeadLink']) {
             $feed = $this->feedFactory->create($feedOptions);
