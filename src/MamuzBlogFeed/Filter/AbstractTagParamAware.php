@@ -11,7 +11,7 @@ abstract class AbstractTagParamAware implements FilterInterface
 
     /**
      * @param null|string $tagParam
-     * @return FeedOptions
+     * @return AbstractTagParamAware
      */
     public function setTagParam($tagParam)
     {
