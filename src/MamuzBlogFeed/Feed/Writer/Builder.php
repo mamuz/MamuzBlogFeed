@@ -7,7 +7,7 @@ use Zend\Feed\Writer\Feed;
 use Zend\Stdlib\Extractor\ExtractionInterface;
 use Zend\Stdlib\Hydrator\HydrationInterface;
 
-class Factory implements FactoryInterface
+class Builder implements BuilderInterface
 {
     /** @var Feed */
     private $feed;
@@ -37,7 +37,7 @@ class Factory implements FactoryInterface
         $this->postExtractor = $postExtractor;
         $this->hydrator = $hydrator;
 
-        if ($feed instanceof Feed) {
+        if ($feed) {
             $this->feed = $feed;
         } else {
             $this->feed = new Feed;
@@ -95,6 +95,18 @@ class Factory implements FactoryInterface
     /**
      * @return Entry
      */
+    private function getEntryPrototype()
+    {
+        if (!$this->entryPrototype instanceof Entry) {
+            $this->entryPrototype = $this->createEntryPrototype();
+        }
+
+        return clone $this->entryPrototype;
+    }
+
+    /**
+     * @return Entry
+     */
     private function createEntryPrototype()
     {
         $entryPrototype = $this->feed->createEntry();
@@ -106,18 +118,6 @@ class Factory implements FactoryInterface
         }
 
         return $entryPrototype;
-    }
-
-    /**
-     * @return Entry
-     */
-    private function getEntryPrototype()
-    {
-        if (!$this->entryPrototype instanceof Entry) {
-            $this->entryPrototype = $this->createEntryPrototype();
-        }
-
-        return clone $this->entryPrototype;
     }
 
     /**

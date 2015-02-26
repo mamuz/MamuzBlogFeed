@@ -22,11 +22,11 @@ class FeedFactory implements FactoryInterface
         $domainManager = $serviceLocator->get('MamuzBlog\DomainManager');
         /** @var \MamuzBlog\Feature\PostQueryInterface $postService */
         $postService = $domainManager->get('MamuzBlog\Service\PostQuery');
-        /** @var \MamuzBlogFeed\Feed\Writer\FactoryInterface $feedFactory */
-        $feedFactory = $domainManager->get('MamuzBlogFeed\Feed\WriterFactory');
+        /** @var \MamuzBlogFeed\Feed\Writer\BuilderInterface $feedBuilder */
+        $feedBuilder = $domainManager->get('MamuzBlogFeed\Feed\WriterFactory');
         /** @var \MamuzBlogFeed\Options\ConfigProviderInterface $configProvider */
         $configProvider = $domainManager->get('MamuzBlogFeed\Options\ConfigProvider');
 
-        return new Feed($postService, $feedFactory, $configProvider);
+        return new Feed($postService, $feedBuilder, $configProvider);
     }
 }

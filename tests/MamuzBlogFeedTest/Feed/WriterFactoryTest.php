@@ -30,7 +30,7 @@ class WriterFactoryTest extends \PHPUnit_Framework_TestCase
 
         $factory = $this->fixture->createService($sm);
 
-        $this->assertInstanceOf('MamuzBlogFeed\Feed\Writer\FactoryInterface', $factory);
+        $this->assertInstanceOf('MamuzBlogFeed\Feed\Writer\BuilderInterface', $factory);
     }
 
     public function testCreationWithServiceLocatorAwareness()
@@ -48,6 +48,6 @@ class WriterFactoryTest extends \PHPUnit_Framework_TestCase
 
         $factory = $this->fixture->createService($sl);
 
-        $this->assertInstanceOf('MamuzBlogFeed\Feed\Writer\FactoryInterface', $factory);
+        $this->assertInstanceOf('MamuzBlogFeed\Feed\Writer\BuilderInterface', $factory);
     }
 }

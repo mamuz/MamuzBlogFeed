@@ -19,9 +19,9 @@
     },
     "require-dev"      : {
         "satooshi/php-coveralls"       : "0.6.*",
-        "phpunit/phpunit"              : "4.2.*",
+        "phpunit/phpunit"              : "4.*",
         "mockery/mockery"              : "0.9.*",
-        "mamuz/php-dependency-analysis": "0.1.*"
+        "mamuz/php-dependency-analysis": "0.*"
     },
     "autoload"         : {
         "psr-0": {

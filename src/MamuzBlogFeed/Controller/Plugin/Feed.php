@@ -5,7 +5,7 @@ namespace MamuzBlogFeed\Controller\Plugin;
 use MamuzBlog\EventManager\AwareTrait as EventManagerAwareTrait;
 use MamuzBlog\Feature\PostQueryInterface;
 use MamuzBlogFeed\EventManager\Event;
-use MamuzBlogFeed\Feed\Writer\FactoryInterface;
+use MamuzBlogFeed\Feed\Writer\BuilderInterface;
 use MamuzBlogFeed\Options\ConfigProviderInterface;
 use Zend\Feed\Writer\Feed as FeedWriter;
 use Zend\Mvc\Controller\AbstractController as MvcController;
@@ -18,7 +18,7 @@ class Feed extends AbstractPlugin
     /** @var PostQueryInterface */
     private $postService;
 
-    /** @var FactoryInterface */
+    /** @var BuilderInterface */
     private $feedFactory;
 
     /** @var ConfigProviderInterface */
@@ -26,12 +26,12 @@ class Feed extends AbstractPlugin
 
     /**
      * @param PostQueryInterface      $postService
-     * @param FactoryInterface        $feedFactory
+     * @param BuilderInterface        $feedFactory
      * @param ConfigProviderInterface $configProvider
      */
     public function __construct(
         PostQueryInterface $postService,
-        FactoryInterface $feedFactory,
+        BuilderInterface $feedFactory,
         ConfigProviderInterface $configProvider
     ) {
         $this->postService = $postService;
@@ -81,7 +81,6 @@ class Feed extends AbstractPlugin
 
         $feedOptions = $this->configProvider->getFor($tag);
 
-        /** @var \IteratorAggregate $posts */
         return $this->feedFactory->create($feedOptions, $posts);
     }
 }

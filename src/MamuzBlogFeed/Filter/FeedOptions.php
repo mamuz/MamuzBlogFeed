@@ -6,7 +6,6 @@ use Zend\View\Renderer\RendererInterface;
 
 class FeedOptions extends AbstractTagParamAware
 {
-
     /** @var RendererInterface */
     private $renderer;
 

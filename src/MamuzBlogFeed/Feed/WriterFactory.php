@@ -13,7 +13,7 @@ class WriterFactory implements FactoryInterface
 {
     /**
      * {@inheritdoc}
-     * @return Writer\FactoryInterface
+     * @return Writer\BuilderInterface
      */
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
@@ -25,6 +25,6 @@ class WriterFactory implements FactoryInterface
         $viewHelperManager = $serviceLocator->get('ViewHelperManager');
         $postExtractor = new FeedEntry($viewHelperManager->getRenderer());
 
-        return new Writer\Factory($postExtractor, new Mutator);
+        return new Writer\Builder($postExtractor, new Mutator);
     }
 }

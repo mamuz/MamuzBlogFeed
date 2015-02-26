@@ -2,11 +2,11 @@
 
 namespace MamuzBlogFeedTest\Feed\Writer;
 
-use MamuzBlogFeed\Feed\Writer\Factory;
+use MamuzBlogFeed\Feed\Writer\Builder;
 
 class FactoryTest extends \PHPUnit_Framework_TestCase
 {
-    /** @var Factory */
+    /** @var Builder */
     protected $fixture;
 
     /** @var \Zend\Stdlib\Extractor\ExtractionInterface | \Mockery\MockInterface */
@@ -23,12 +23,12 @@ class FactoryTest extends \PHPUnit_Framework_TestCase
         $this->extractor = \Mockery::mock('Zend\Stdlib\Extractor\ExtractionInterface');
         $this->hydrator = \Mockery::mock('Zend\Stdlib\Hydrator\HydrationInterface');
 
-        $this->fixture = new Factory($this->extractor, $this->hydrator);
+        $this->fixture = new Builder($this->extractor, $this->hydrator);
     }
 
     public function testImplementingFactoryInterface()
     {
-        $this->assertInstanceOf('MamuzBlogFeed\Feed\Writer\FactoryInterface', $this->fixture);
+        $this->assertInstanceOf('MamuzBlogFeed\Feed\Writer\BuilderInterface', $this->fixture);
     }
 
     public function testCreation()
@@ -70,7 +70,7 @@ class FactoryTest extends \PHPUnit_Framework_TestCase
         $feed->shouldReceive('addEntry');
         $feed->shouldReceive('createEntry')->andReturn($entry);
 
-        $this->fixture = new Factory($this->extractor, $this->hydrator, $feed);
+        $this->fixture = new Builder($this->extractor, $this->hydrator, $feed);
 
         $post = \Mockery::mock('MamuzBlog\Entity\Post');
         $options = array('foo');
@@ -108,7 +108,7 @@ class FactoryTest extends \PHPUnit_Framework_TestCase
         $feed->shouldReceive('addEntry');
         $feed->shouldReceive('createEntry')->andReturn($entry);
 
-        $this->fixture = new Factory($this->extractor, $this->hydrator, $feed);
+        $this->fixture = new Builder($this->extractor, $this->hydrator, $feed);
 
         $post = \Mockery::mock('MamuzBlog\Entity\Post');
         $options = array('foo');
@@ -153,7 +153,7 @@ class FactoryTest extends \PHPUnit_Framework_TestCase
         $feed->shouldReceive('addEntry');
         $feed->shouldReceive('createEntry')->andReturn($entry);
 
-        $this->fixture = new Factory($this->extractor, $this->hydrator, $feed);
+        $this->fixture = new Builder($this->extractor, $this->hydrator, $feed);
 
         $post = \Mockery::mock('MamuzBlog\Entity\Post');
         $options = array('foo');
@@ -187,7 +187,7 @@ class FactoryTest extends \PHPUnit_Framework_TestCase
         $feed->shouldReceive('setType')->with('rss');
         $feed->shouldReceive('setLastBuildDate');
 
-        $this->fixture = new Factory($this->extractor, $this->hydrator, $feed);
+        $this->fixture = new Builder($this->extractor, $this->hydrator, $feed);
         $options = array('foo');
         $this->hydrator->shouldReceive('hydrate')->andReturnUsing(
             function ($data, $object) use ($options, $feed) {

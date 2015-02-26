@@ -23,7 +23,7 @@ class FeedFactoryTest extends \PHPUnit_Framework_TestCase
     {
         $queryInterface = \Mockery::mock('MamuzBlog\Feature\PostQueryInterface');
         $configProvider = \Mockery::mock('MamuzBlogFeed\Options\ConfigProviderInterface');
-        $feedFactory = \Mockery::mock('MamuzBlogFeed\Feed\Writer\FactoryInterface');
+        $feedFactory = \Mockery::mock('MamuzBlogFeed\Feed\Writer\BuilderInterface');
 
         $sm = \Mockery::mock('Zend\ServiceManager\ServiceLocatorInterface');
         $sm->shouldReceive('get')->with('MamuzBlogFeed\Feed\WriterFactory')->andReturn($feedFactory);
@@ -45,7 +45,7 @@ class FeedFactoryTest extends \PHPUnit_Framework_TestCase
 
         $queryInterface = \Mockery::mock('MamuzBlog\Feature\PostQueryInterface');
         $configProvider = \Mockery::mock('MamuzBlogFeed\Options\ConfigProviderInterface');
-        $feedFactory = \Mockery::mock('MamuzBlogFeed\Feed\Writer\FactoryInterface');
+        $feedFactory = \Mockery::mock('MamuzBlogFeed\Feed\Writer\BuilderInterface');
 
         $sm->shouldReceive('get')->with('MamuzBlogFeed\Feed\WriterFactory')->andReturn($feedFactory);
         $sm->shouldReceive('get')->with('MamuzBlogFeed\Options\ConfigProvider')->andReturn($configProvider);

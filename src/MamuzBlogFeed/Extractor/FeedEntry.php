@@ -25,7 +25,7 @@ class FeedEntry implements ExtractionInterface
             return array();
         }
 
-        $data = $this->getArrayCopy($object);
+        $data = $this->getArrayCopyFrom($object);
 
         $categories = $this->extractCategoriesFrom($object);
         if (!empty($categories)) {
@@ -39,7 +39,7 @@ class FeedEntry implements ExtractionInterface
      * @param Post $object
      * @return array
      */
-    private function getArrayCopy(Post $object)
+    private function getArrayCopyFrom(Post $object)
     {
         /** @var \MamuzBlog\View\Renderer\PhpRenderer $renderer */
         $renderer = $this->renderer;

@@ -2,7 +2,7 @@
 
 namespace MamuzBlogFeed\Feed\Writer;
 
-interface FactoryInterface
+interface BuilderInterface
 {
     /**
      * @param array              $feedOptions

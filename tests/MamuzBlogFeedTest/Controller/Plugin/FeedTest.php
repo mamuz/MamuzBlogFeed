@@ -10,7 +10,7 @@ class FeedTest extends \PHPUnit_Framework_TestCase
     /** @var Feed */
     protected $fixture;
 
-    /** @var \MamuzBlogFeed\Feed\Writer\FactoryInterface | \Mockery\MockInterface */
+    /** @var \MamuzBlogFeed\Feed\Writer\BuilderInterface | \Mockery\MockInterface */
     protected $feedFactory;
 
     /** @var \Zend\Feed\Writer\Feed | \Mockery\MockInterface */
@@ -48,7 +48,7 @@ class FeedTest extends \PHPUnit_Framework_TestCase
         $this->postService = \Mockery::mock('MamuzBlog\Feature\PostQueryInterface');
         $this->serviceLocator = \Mockery::mock('Zend\ServiceManager\ServiceLocatorInterface');
         $this->feedWriter = \Mockery::mock('Zend\Feed\Writer\Feed');
-        $this->feedFactory = \Mockery::mock('MamuzBlogFeed\Feed\Writer\FactoryInterface');
+        $this->feedFactory = \Mockery::mock('MamuzBlogFeed\Feed\Writer\BuilderInterface');
         $this->configProvider = \Mockery::mock('MamuzBlogFeed\Options\ConfigProviderInterface');
 
         $this->fixture = new Feed($this->postService, $this->feedFactory, $this->configProvider);
