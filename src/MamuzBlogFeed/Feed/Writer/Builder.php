@@ -64,6 +64,7 @@ class Builder implements BuilderInterface
     {
         $this->feed->setType('rss');
         $this->feed->setLastBuildDate(time());
+        $this->feed->setGenerator('MamuzBlogFeed');
 
         $this->hydrator->hydrate(
             $feedOptions,

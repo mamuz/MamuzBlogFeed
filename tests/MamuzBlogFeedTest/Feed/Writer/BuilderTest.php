@@ -67,6 +67,7 @@ class FactoryTest extends \PHPUnit_Framework_TestCase
         $feed->shouldReceive('setDateModified');
         $feed->shouldReceive('getDateModified')->andReturnNull();
         $feed->shouldReceive('setLastBuildDate');
+        $feed->shouldReceive('setGenerator');
         $feed->shouldReceive('addEntry');
         $feed->shouldReceive('createEntry')->andReturn($entry);
 
@@ -105,6 +106,7 @@ class FactoryTest extends \PHPUnit_Framework_TestCase
         $feed->shouldReceive('setType')->with('rss');
         $feed->shouldReceive('getDateModified')->andReturn(new \DateTime);
         $feed->shouldReceive('setLastBuildDate');
+        $feed->shouldReceive('setGenerator');
         $feed->shouldReceive('addEntry');
         $feed->shouldReceive('createEntry')->andReturn($entry);
 
@@ -150,6 +152,7 @@ class FactoryTest extends \PHPUnit_Framework_TestCase
         $feed->shouldReceive('setDateModified')->with($lastDate);
         $feed->shouldReceive('getDateModified')->andReturnNull();
         $feed->shouldReceive('setLastBuildDate');
+        $feed->shouldReceive('setGenerator');
         $feed->shouldReceive('addEntry');
         $feed->shouldReceive('createEntry')->andReturn($entry);
 
@@ -186,6 +189,7 @@ class FactoryTest extends \PHPUnit_Framework_TestCase
         $feed = \Mockery::mock('Zend\Feed\Writer\Feed');
         $feed->shouldReceive('setType')->with('rss');
         $feed->shouldReceive('setLastBuildDate');
+        $feed->shouldReceive('setGenerator');
 
         $this->fixture = new Builder($this->extractor, $this->hydrator, $feed);
         $options = array('foo');

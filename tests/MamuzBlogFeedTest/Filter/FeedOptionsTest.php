@@ -39,6 +39,7 @@ class FeedOptionsTest extends \PHPUnit_Framework_TestCase
             'feedUrl' => 1,
             'baseUrl' => 2,
             'link'    => 3,
+            'id'      => 4,
         );
 
         $this->assertSame($expected, $this->fixture->filter($expected));

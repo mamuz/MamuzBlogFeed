@@ -42,47 +42,38 @@ return array(
     'MamuzBlogFeed'      => array(
         'default' => array(
             'autoHeadLink'  => true,
-            'maxResults'    => 100,
-            'id'            => 'http://local.marco-muths.de/blog-feed',
             'type'          => 'rss',
-            'copyright'     => 'mamuz',
-            'language'      => 'de-DE',
-            'dateCreated'   => new \DateTime,
-            'dateModified'  => new \DateTime,
+            'maxResults'    => 100,
+            'language'      => 'en',
+            'dateCreated'   => new \DateTime('2015-01-01'),
             'lastBuildDate' => new \DateTime,
-            'title'         => 'mamuz feed',
-            'description'   => 'description',
-            /*'link'          => 'http://local.marco-muths.de/blog-feed',
-            'encoding'      => '',
-            'baseUrl'       => '',
-            'link'          => '',
-            'hubs'          => array(),
-            'feedLinks'     => array(
-                'rss'  => '',
-                'rdf'  => '',
-                'atom' => '',
-            ),
+            'title'         => 'My feed title',
+            'description'   => 'My feed description',
+            'encoding'      => 'UTF-8',
+            /* OPTIONAL
             'image'         => array(
-                'uri' => '',
-            ),
-            'generator'     => array(
-                'name'    => '',
-                'version' => '',
-                'uri'     => '',
+                'uri'         => '',
+                'title'       => '', // OPTIONAL
+                'link'        => '', // OPTIONAL
+                'width'       => '', // OPTIONAL only rss
+                'height'      => '', // OPTIONAL only rss
+                'description' => '', // OPTIONAL only rss
             ),
             'categories'    => array(
                 array(
-                    'term'   => '',
-                    'scheme' => '',
+                    'term'   => '', // machine readable category name
+                    'scheme' => '', // OPTIONAL: The Atom scheme or RSS domain of  a category must be a valid URI
                 ),
             ),
             'authors'       => array(
                 array(
                     'name'  => '',
-                    'email' => '',
-                    'uri'   => '',
+                    'email' => '', // OPTIONAL
+                    'uri'   => '', // OPTIONAL
                 ),
-            ),*/
+            ),
+            'copyright'     => '',
+            */
         ),
     ),
 );

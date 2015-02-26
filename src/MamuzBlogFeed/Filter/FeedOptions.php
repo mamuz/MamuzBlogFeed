@@ -9,6 +9,9 @@ class FeedOptions extends AbstractTagParamAware
     /** @var RendererInterface */
     private $renderer;
 
+    /** @var string */
+    private $selfUrl;
+
     /**
      * @param RendererInterface $renderer
      */
@@ -26,6 +29,9 @@ class FeedOptions extends AbstractTagParamAware
         /** @var \MamuzBlog\View\Renderer\PhpRenderer $renderer */
         $renderer = $this->renderer;
 
+        if (!isset($value['id'])) {
+            $value['id'] = $this->getSelfUrl();
+        }
         if (!isset($value['feedUrl'])) {
             $value['feedUrl'] = $this->getSelfUrl();
         }
@@ -43,6 +49,18 @@ class FeedOptions extends AbstractTagParamAware
      * @return string
      */
     private function getSelfUrl()
+    {
+        if (!is_string($this->selfUrl)) {
+            $this->selfUrl = $this->createSelfUrl();
+        }
+
+        return $this->selfUrl;
+    }
+
+    /**
+     * @return string
+     */
+    private function createSelfUrl()
     {
         /** @var \MamuzBlog\View\Renderer\PhpRenderer $renderer */
         $renderer = $this->renderer;
