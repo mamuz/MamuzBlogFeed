@@ -2,6 +2,7 @@
 
 namespace MamuzBlogFeed\Hydrator;
 
+use Zend\Feed\Writer\Exception\BadMethodCallException;
 use Zend\Stdlib\Hydrator\HydrationInterface;
 
 class Mutator implements HydrationInterface
@@ -26,13 +27,11 @@ class Mutator implements HydrationInterface
      */
     private function mutate($object, $method, $value)
     {
-        if (method_exists($object, $method)
-            && is_callable(array($object, $method))
-        ) {
+        try {
             $object->$method($value);
             return true;
+        } catch (BadMethodCallException $e) {
+            return false;
         }
-
-        return false;
     }
 }

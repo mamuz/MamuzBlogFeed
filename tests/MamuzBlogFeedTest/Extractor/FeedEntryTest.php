@@ -17,7 +17,7 @@ class FeedEntryTest extends \PHPUnit_Framework_TestCase
 
     /** @var array */
     protected $exp = array(
-        'id'           => 'hashed',
+        'id'           => 'href',
         'link'         => 'href',
         'title'        => 'foo',
         'description'  => 'bar',
@@ -35,14 +35,12 @@ class FeedEntryTest extends \PHPUnit_Framework_TestCase
 
     protected function prepareMocks()
     {
-        $this->post->shouldReceive('getId')->once()->andReturn($this->exp['id']);
         $this->post->shouldReceive('getTitle')->once()->andReturn($this->exp['title']);
         $this->post->shouldReceive('getDescription')->once()->andReturn($this->exp['description']);
         $this->post->shouldReceive('getContent')->once()->andReturn($this->exp['content']);
         $this->post->shouldReceive('getModifiedAt')->once()->andReturn($this->exp['dateModified']);
         $this->post->shouldReceive('getCreatedAt')->once()->andReturn($this->exp['dateCreated']);
 
-        $this->renderer->shouldReceive('hashId')->once()->with($this->exp['id'])->andReturn($this->exp['id']);
         $this->renderer->shouldReceive('permaLinkPost')->once()->with($this->post)->andReturn($this->exp['link']);
         $this->renderer->shouldReceive('markdown')->once()
             ->with($this->exp['description'])->andReturn($this->exp['description']);

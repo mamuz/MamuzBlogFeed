@@ -19,6 +19,14 @@ class FeedEntry implements ExtractionInterface
         $this->renderer = $renderer;
     }
 
+    /**
+     * @return RendererInterface
+     */
+    protected function getRenderer()
+    {
+        return $this->renderer;
+    }
+
     public function extract($object)
     {
         if (!$object instanceof Post) {
@@ -39,10 +47,10 @@ class FeedEntry implements ExtractionInterface
      * @param Post $object
      * @return array
      */
-    private function getArrayCopyFrom(Post $object)
+    protected function getArrayCopyFrom(Post $object)
     {
         /** @var \MamuzBlog\View\Renderer\PhpRenderer $renderer */
-        $renderer = $this->renderer;
+        $renderer = $this->getRenderer();
 
         $permaLink = $renderer->permaLinkPost($object);
 
@@ -63,10 +71,10 @@ class FeedEntry implements ExtractionInterface
      * @param Post $object
      * @return array
      */
-    private function extractCategoriesFrom(Post $object)
+    protected function extractCategoriesFrom(Post $object)
     {
         /** @var \MamuzBlog\View\Renderer\PhpRenderer $renderer */
-        $renderer = $this->renderer;
+        $renderer = $this->getRenderer();
 
         $categories = array();
         foreach ($object->getTags() as $tag) {
