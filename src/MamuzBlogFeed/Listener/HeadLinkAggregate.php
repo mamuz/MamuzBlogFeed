@@ -2,7 +2,7 @@
 
 namespace MamuzBlogFeed\Listener;
 
-use MamuzBlogFeed\Feed\Writer\FactoryInterface;
+use MamuzBlogFeed\Feed\Writer\BuilderInterface;
 use MamuzBlogFeed\Options\ConfigProviderInterface;
 use Zend\EventManager\EventInterface;
 use Zend\View\Helper\HeadLink;
@@ -12,24 +12,24 @@ class HeadLinkAggregate extends AbstractAggregate
     /** @var HeadLink */
     private $headLink;
 
-    /** @var FactoryInterface */
-    private $feedFactory;
+    /** @var BuilderInterface */
+    private $builder;
 
     /** @var ConfigProviderInterface */
     private $configProvider;
 
     /**
      * @param HeadLink                $headLink
-     * @param FactoryInterface        $feedFactory
+     * @param BuilderInterface        $builder
      * @param ConfigProviderInterface $configProvider
      */
     public function __construct(
         HeadLink $headLink,
-        FactoryInterface $feedFactory,
+        BuilderInterface $builder,
         ConfigProviderInterface $configProvider
     ) {
         $this->headLink = $headLink;
-        $this->feedFactory = $feedFactory;
+        $this->builder = $builder;
         $this->configProvider = $configProvider;
     }
 
@@ -42,7 +42,7 @@ class HeadLinkAggregate extends AbstractAggregate
         $feedOptions = $this->configProvider->getFor($this->getTagParamFrom($query));
 
         if (isset($feedOptions['autoHeadLink']) && $feedOptions['autoHeadLink']) {
-            $feed = $this->feedFactory->create($feedOptions);
+            $feed = $this->builder->create($feedOptions);
             foreach ($feed->getFeedLinks() as $type => $link) {
                 $this->headLink->appendAlternate(
                     $link,

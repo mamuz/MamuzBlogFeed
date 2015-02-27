@@ -24,11 +24,11 @@ class HeadLinkAggregateFactory implements FactoryInterface
         $headLink = $viewHelperManager->get('HeadLink');
         /** @var ServiceLocatorInterface $domainManager */
         $domainManager = $serviceLocator->get('MamuzBlog\DomainManager');
-        /** @var \MamuzBlogFeed\Feed\Writer\FactoryInterface $feedFactory */
-        $feedFactory = $domainManager->get('MamuzBlogFeed\Feed\WriterFactory');
+        /** @var \MamuzBlogFeed\Feed\Writer\BuilderInterface $feedFactory */
+        $builder = $domainManager->get('MamuzBlogFeed\Feed\WriterFactory');
         /** @var \MamuzBlogFeed\Options\ConfigProviderInterface $configProvider */
         $configProvider = $domainManager->get('MamuzBlogFeed\Options\ConfigProvider');
 
-        return new HeadLinkAggregate($headLink, $feedFactory, $configProvider);
+        return new HeadLinkAggregate($headLink, $builder, $configProvider);
     }
 }
