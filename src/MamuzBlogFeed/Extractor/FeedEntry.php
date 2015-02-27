@@ -44,9 +44,11 @@ class FeedEntry implements ExtractionInterface
         /** @var \MamuzBlog\View\Renderer\PhpRenderer $renderer */
         $renderer = $this->renderer;
 
+        $permaLink = $renderer->permaLinkPost($object);
+
         $data = array(
-            'id'           => $renderer->hashId($object->getId()),
-            'link'         => $renderer->permaLinkPost($object),
+            'id'           => $permaLink,
+            'link'         => $permaLink,
             'title'        => $object->getTitle(),
             'description'  => $renderer->markdown($object->getDescription()),
             'content'      => $renderer->markdown($object->getContent()),
