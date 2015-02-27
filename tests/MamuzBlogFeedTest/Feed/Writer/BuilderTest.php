@@ -79,7 +79,7 @@ class FactoryTest extends \PHPUnit_Framework_TestCase
         $this->hydrator->shouldReceive('hydrate')->andReturnUsing(
             function ($data, $object) use ($options, $feed) {
                 if ($object instanceof \Zend\Feed\Writer\Feed) {
-                    $this->assertSame($feed, $object);
+                    $this->assertNotSame($feed, $object);
                 } else {
                     $this->assertInstanceOf('Zend\Feed\Writer\Entry', $object);
                 }
@@ -118,7 +118,7 @@ class FactoryTest extends \PHPUnit_Framework_TestCase
         $this->hydrator->shouldReceive('hydrate')->andReturnUsing(
             function ($data, $object) use ($options, $feed) {
                 if ($object instanceof \Zend\Feed\Writer\Feed) {
-                    $this->assertSame($feed, $object);
+                    $this->assertNotSame($feed, $object);
                 } else {
                     $this->assertInstanceOf('Zend\Feed\Writer\Entry', $object);
                 }
@@ -164,7 +164,7 @@ class FactoryTest extends \PHPUnit_Framework_TestCase
         $this->hydrator->shouldReceive('hydrate')->andReturnUsing(
             function ($data, $object) use ($options, $feed, $entryFirst, $entryLast) {
                 if ($object instanceof \Zend\Feed\Writer\Feed) {
-                    $this->assertSame($feed, $object);
+                    $this->assertNotSame($feed, $object);
                 } else {
                     $this->assertInstanceOf('Zend\Feed\Writer\Entry', $object);
                     if ($this->iteratorCnt == 0) {
@@ -196,7 +196,7 @@ class FactoryTest extends \PHPUnit_Framework_TestCase
         $this->hydrator->shouldReceive('hydrate')->andReturnUsing(
             function ($data, $object) use ($options, $feed) {
                 if ($object instanceof \Zend\Feed\Writer\Feed) {
-                    $this->assertSame($feed, $object);
+                    $this->assertNotSame($feed, $object);
                 } else {
                     $this->assertInstanceOf('Zend\Feed\Writer\Entry', $object);
                 }

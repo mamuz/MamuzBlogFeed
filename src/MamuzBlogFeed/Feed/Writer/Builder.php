@@ -10,6 +10,9 @@ use Zend\Stdlib\Hydrator\HydrationInterface;
 class Builder implements BuilderInterface
 {
     /** @var Feed */
+    private $feedPrototype;
+
+    /** @var Feed */
     private $feed;
 
     /** @var Entry */
@@ -27,20 +30,20 @@ class Builder implements BuilderInterface
     /**
      * @param ExtractionInterface $postExtractor
      * @param HydrationInterface  $hydrator
-     * @param Feed                $feed
+     * @param Feed                $feedPrototype
      */
     public function __construct(
         ExtractionInterface $postExtractor,
         HydrationInterface $hydrator,
-        Feed $feed = null
+        Feed $feedPrototype = null
     ) {
         $this->postExtractor = $postExtractor;
         $this->hydrator = $hydrator;
 
-        if ($feed) {
-            $this->feed = $feed;
+        if ($feedPrototype) {
+            $this->feedPrototype = $feedPrototype;
         } else {
-            $this->feed = new Feed;
+            $this->feedPrototype = new Feed;
         }
     }
 
@@ -62,6 +65,7 @@ class Builder implements BuilderInterface
      */
     private function createFeed(array $feedOptions)
     {
+        $this->feed = clone $this->feedPrototype;
         $this->feed->setType('rss');
         $this->feed->setLastBuildDate(time());
         $this->feed->setGenerator('MamuzBlogFeed');
