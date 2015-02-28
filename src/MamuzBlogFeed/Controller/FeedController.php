@@ -39,19 +39,10 @@ class FeedController extends AbstractActionController
         $feedmodel = new Model\FeedModel;
         $feedmodel->setFeed($feed);
 
-        /** @var \Zend\Http\Request $request */
-        $request = $this->getRequest();
-        if ($accept = $request->getHeader('accept')) {
-            $value = $accept->getFieldValue();
-            if ((strpos($value, 'application/rss+xml') === false || strpos($value, 'application/atom+xml') === false)
-                && strpos($value, 'application/xml') !== false
-            ) {
-                /** @var \Zend\Http\Response $response */
-                $response = $this->getResponse();
-                $headers = $response->getHeaders();
-                $headers->addHeaderLine('content-type', 'application/xml; charset=' . $feed->getEncoding() . ';');
-            }
-        }
+        /** @var \Zend\Http\Response $response */
+        $response = $this->getResponse();
+        $headers = $response->getHeaders();
+        $headers->addHeaderLine('content-type', 'application/xml; charset=' . $feed->getEncoding() . ';');
 
         return $feedmodel;
     }
