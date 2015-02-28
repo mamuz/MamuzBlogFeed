@@ -32,7 +32,7 @@ class FeedControllerTest extends \PHPUnit_Framework_TestCase
     /** @var \Zend\EventManager\ListenerAggregateInterface | \Mockery\MockInterface */
     protected $listener;
 
-    /** @var \MamuzBlogFeed\Controller\Plugin\HeadFeedLink |\Mockery\MockInterface */
+    /** @var \MamuzBlogFeed\Controller\Plugin\Feed |\Mockery\MockInterface */
     protected $headFeedLink;
 
     /** @var \MamuzBlogFeed\Controller\Plugin\Feed |\Mockery\MockInterface */
@@ -41,6 +41,7 @@ class FeedControllerTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $this->feedWriter = \Mockery::mock('Zend\Feed\Writer\Feed');
+        $this->feedWriter->shouldReceive('getEncoding')->andReturn('UTF-8');
         $this->listener = \Mockery::mock('Zend\EventManager\ListenerAggregateInterface')->shouldIgnoreMissing();
 
         $this->fixture = new FeedController($this->listener);
@@ -52,7 +53,7 @@ class FeedControllerTest extends \PHPUnit_Framework_TestCase
 
         $this->feed = \Mockery::mock('MamuzBlogFeed\Controller\Plugin\Feed');
         $this->feed->shouldReceive('create')->andReturn($this->feedWriter);
-        $this->headFeedLink = \Mockery::mock('MamuzBlogFeed\Controller\Plugin\HeadFeed');
+        $this->headFeedLink = \Mockery::mock('MamuzBlogFeed\Controller\Plugin\Feed');
         $this->headFeedLink->shouldReceive('add')->with($this->feedWriter);
 
         $pluginManager = \Mockery::mock('Zend\Mvc\Controller\PluginManager')->shouldIgnoreMissing();
