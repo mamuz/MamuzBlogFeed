@@ -1,31 +1,35 @@
 {
-    "name"             : "mamuz/mamuz-blog-feed",
-    "type"             : "library",
-    "description"      : "MamuzBlog plugin to provide feeds",
-    "homepage"         : "https://github.com/mamuz/MamuzBlogFeed",
-    "license"          : "MIT",
-    "keywords"         : ["mamuz", "blog", "feed"],
-    "authors"          : [
-        {
-            "name" : "Marco Muths",
-            "email": "mamuz.de@gmail.com"
-        }
-    ],
-    "minimum-stability": "dev",
-    "prefer-stable"    : true,
-    "require"          : {
-        "zendframework/zend-feed": "~2.3",
-        "mamuz/mamuz-blog"       : ">=1.3"
-    },
-    "require-dev"      : {
-        "satooshi/php-coveralls"       : "0.6.*",
-        "phpunit/phpunit"              : "4.*",
-        "mockery/mockery"              : "0.9.*",
-        "mamuz/php-dependency-analysis": "0.*"
-    },
-    "autoload"         : {
-        "psr-0": {
-            "MamuzBlogFeed\\": "src/"
-        }
+  "name": "mamuz/mamuz-blog-feed",
+  "type": "library",
+  "description": "MamuzBlog plugin to provide feeds",
+  "homepage": "https://github.com/mamuz/MamuzBlogFeed",
+  "license": "MIT",
+  "keywords": [
+    "zf2",
+    "blog",
+    "feed"
+  ],
+  "authors": [
+    {
+      "name": "Marco Muths",
+      "email": "mamuz.de@gmail.com"
     }
+  ],
+  "minimum-stability": "dev",
+  "prefer-stable": true,
+  "require": {
+    "zendframework/zend-feed": "~2.3",
+    "mamuz/mamuz-blog": "~1.3"
+  },
+  "require-dev": {
+    "satooshi/php-coveralls": "0.6.*",
+    "phpunit/phpunit": "4.*",
+    "mockery/mockery": "0.9.*",
+    "mamuz/php-dependency-analysis": "0.*"
+  },
+  "autoload": {
+    "psr-0": {
+      "MamuzBlogFeed\\": "src/"
+    }
+  }
 }

@@ -25,6 +25,4 @@ class FeedControllerFactory implements FactoryInterface
 
         return new FeedController($listenerAggregate);
     }
-
-
 }
